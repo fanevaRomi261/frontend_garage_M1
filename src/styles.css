@@ -1,1 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("../node_modules/bootstrap-icons/font/bootstrap-icons.css");
+@import url("../node_modules/bootstrap/dist/css/bootstrap.css");
+/* ### font-style ### */
+* {
+  font-family: "Poppins-Regular";
+  font-size: 15px;
+}
+
+@font-face {
+  font-family: "Poppins-Black";
+  src: url("assets/fonts/Poppins-Black.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Bold";
+  src: url("assets/fonts/Poppins-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-ExtraBold";
+  src: url("assets/fonts/Poppins-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Italic";
+  src: url("assets/fonts/Poppins-Italic.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Light";
+  src: url("assets/fonts/Poppins-Light.ttf");
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("assets/fonts/Poppins-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("assets/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Thin";
+  src: url("assets/fonts/Poppins-Thin.ttf");
+}
+body {
+  height: 100%;
+}
+
+aside {
+  position: fixed;
+  overflow: auto;
+  height: calc(100vh - 12px);
+  justify-content: flex-start;
+  align-self: flex-start;
+}
+
+nav {
+  position: sticky;
+}
+
+main {
+  position: relative;
+  overflow: visible;
+  margin-left: auto;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
+#sidebarshow {
+  display: none;
+}
+
+@media screen and (max-width: 575px) {
+  #sidebarshow {
+    display: inline;
+  }
+
+  #sidebartoggle {
+    display: none;
+  }
+}

@@ -1,0 +1,231 @@
+<body class="bg-body-tertiary">
+  <!-- ### debut menu horizontal ### !-->
+  <aside
+    class="collapse show collapse-horizontal col-sm-2 p-3 border-end bg-body-tertiary"
+    id="collapseWidthExample"
+  >
+    <a
+      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+    >
+      <span class="d-print-block">Mécanicien</span>
+    </a>
+
+    <hr />
+
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="#" class="nav-link link-body-emphasis" aria-current="page">
+          <p class="bi bi-house-door" style="position:fixed;"> Home</p><br>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <p class="bi bi-speedometer2" style="position:fixed;"> Dashboard</p><br>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <p class="bi bi-table" style="position:fixed;"> Orders</p><br>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <p class="bi bi-grid" style="position:fixed;"> Products</p><br>
+        </a>
+      </li>
+    </ul>
+
+    <hr />
+
+    <div class="dropdown py-2">
+      <img
+        src="https://scontent.ftnr2-2.fna.fbcdn.net/v/t39.30808-1/481081117_2946941145484022_2717288776568504193_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGaliCfruYKW_D_ubny9u6kkqUHja5VPYqSpQeNrlU9itlgV1dwWtQsHpmMolEqrZnb-2H4sstoBAiajVbi8PqZ&_nc_ohc=rfQV3E3l58oQ7kNvgEhQAx4&_nc_oc=AdjGhYK8wVYzFtV7War8Blo3ubQMR2mnyQdMVNIogjlo7gfGi0CiZduNJV1L3j4t1Bg&_nc_zt=24&_nc_ht=scontent.ftnr2-2.fna&_nc_gid=ABjhiggvCAui3I1DjCcToAx&oh=00_AYHIajvk0Mi6PKGCFrckpDFkdSaYW3-b1_VmSlEsqTMXUw&oe=67D672F0"
+        alt=""
+        width="30"
+        height="30"
+        class="rounded-circle me-2"
+      />
+      <span class="d-print-block">Faneva - ETU 00XXXX</span>
+    </div>
+    <div class="dropdown py-2">
+      <img
+        src="https://scontent.ftnr2-2.fna.fbcdn.net/v/t39.30808-1/471609824_2051737435265148_3307263038832725503_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEtfQzt9xtligqZTRPB5K7tXdVIbJlC40Rd1UhsmULjREzP6GNsX183ifdmESoBNQpupqro48pJTcjYjER8iuIg&_nc_ohc=XgAU9Y8Aa9oQ7kNvgEQVWBJ&_nc_oc=Adg25i782dNALDW4iClhfM3PFs-hzHB6vZQo-d_PlJ7BXA89-MDz3ddrO0YDBU8gnf4&_nc_zt=24&_nc_ht=scontent.ftnr2-2.fna&_nc_gid=AOF1zOct0d4avpUsjVagQOY&oh=00_AYGNd6TLNAc3-DSIt3OCoKriyb4Rc213nFl36GwqPhIjNw&oe=67D674C4"
+        alt=""
+        width="30"
+        height="30"
+        class="rounded-circle me-2"
+      />
+      <span class="d-print-block">Ismaël - ETU 00XXXX</span>
+    </div>
+  </aside>
+  <!-- ### fin menu horizontal #### !-->
+
+  <!-- ### debut main content #### !-->
+  <main
+    class="col-sm-10 bg-body-tertiary"
+    [ngClass]="{ 'col-sm-10': !isExpanded, 'col-sm-12': isExpanded }"
+  >
+    <!-- ### debut navbar #### !-->
+    <nav
+      class="navbar sticky-top navbar-expand-lg border-bottom bg-body-tertiary"
+    >
+      <div class="container-fluid">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseWidthExample"
+          aria-expanded="true"
+          aria-controls="collapseWidthExample"
+          style="margin-right: 10px; padding: 0px 5px 0px 5px"
+          id="sidebartoggle"
+          (click)="changeClass()"
+        >
+          <i class="bi bi-arrows-expand-vertical"></i>
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasExample"
+          aria-controls="offcanvasExample"
+          style="margin-right: 10px; padding: 2px 6px 2px 6px"
+          id="sidebarshow"
+        >
+          <i class="bi bi-arrow-bar-right"></i>
+        </button>
+
+        <a class="text-decoration-none">Navbar</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="true"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page">Home</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- ### fin navbar #### !-->
+
+    <!-- ### debut template ### !-->
+    <div class="container-fluid">
+      <!-- ### debut breadcrumb ### !-->
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+        id="title"
+      >
+        <h1 class="h2">My site</h1>
+      </div>
+      <!-- ### fin breadcrumb ### !-->
+
+      <div class="row"></div>
+
+      <!-- debut contenu ici -->
+      <!-- ici le contenu -->
+      <router-outlet></router-outlet>
+      <!-- fin contenu ici -->
+
+    </div>
+    <!-- ### fin template ### !-->
+  </main>
+
+  <!-- pour ecran kely de miova le sidebar -->
+  <div
+    class="offcanvas offcanvas-start"
+    data-bs-scroll="true"
+    tabindex="-1"
+    id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <a
+        href="/"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      >
+        <svg class="bi pe-none me-2" width="40" height="32">
+          <use xlink:href="#bootstrap" />
+        </svg>
+        <span class="d-print-block">Sidebar</span>
+      </a>
+      <hr />
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link link-body-emphasis" aria-current="page">
+            <p class="bi bi-house-door" style="position: fixed">Home</p>
+            <br />
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            <p class="bi bi-speedometer2" style="position: fixed">My site</p>
+            <br />
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            <p class="bi bi-table" style="position: fixed">Orders</p>
+            <br />
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            <p class="bi bi-grid" style="position: fixed">Products</p>
+            <br />
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link link-body-emphasis">
+            <p class="bi bi-person-circle" style="position: fixed">Customers</p>
+            <br />
+          </a>
+        </li>
+      </ul>
+      <hr />
+      <div class="dropdown py-2">
+        <img
+          src="https://scontent.ftnr2-2.fna.fbcdn.net/v/t39.30808-1/481081117_2946941145484022_2717288776568504193_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGaliCfruYKW_D_ubny9u6kkqUHja5VPYqSpQeNrlU9itlgV1dwWtQsHpmMolEqrZnb-2H4sstoBAiajVbi8PqZ&_nc_ohc=rfQV3E3l58oQ7kNvgEhQAx4&_nc_oc=AdjGhYK8wVYzFtV7War8Blo3ubQMR2mnyQdMVNIogjlo7gfGi0CiZduNJV1L3j4t1Bg&_nc_zt=24&_nc_ht=scontent.ftnr2-2.fna&_nc_gid=ABjhiggvCAui3I1DjCcToAx&oh=00_AYHIajvk0Mi6PKGCFrckpDFkdSaYW3-b1_VmSlEsqTMXUw&oe=67D672F0"
+          alt=""
+          width="30"
+          height="30"
+          class="rounded-circle me-2"
+        />
+        <span class="d-print-block">Faneva - ETU 00XXXX</span>
+      </div>
+      <div class="dropdown py-2">
+        <img
+          src="https://scontent.ftnr2-2.fna.fbcdn.net/v/t39.30808-1/471609824_2051737435265148_3307263038832725503_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEtfQzt9xtligqZTRPB5K7tXdVIbJlC40Rd1UhsmULjREzP6GNsX183ifdmESoBNQpupqro48pJTcjYjER8iuIg&_nc_ohc=XgAU9Y8Aa9oQ7kNvgEQVWBJ&_nc_oc=Adg25i782dNALDW4iClhfM3PFs-hzHB6vZQo-d_PlJ7BXA89-MDz3ddrO0YDBU8gnf4&_nc_zt=24&_nc_ht=scontent.ftnr2-2.fna&_nc_gid=AOF1zOct0d4avpUsjVagQOY&oh=00_AYGNd6TLNAc3-DSIt3OCoKriyb4Rc213nFl36GwqPhIjNw&oe=67D674C4"
+          alt=""
+          width="30"
+          height="30"
+          class="rounded-circle me-2"
+        />
+        <span class="d-print-block">Ismaël - ETU 00XXXX</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ### fin main #### !-->
+</body>

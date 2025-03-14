@@ -24,7 +24,8 @@ export class LoginComponent {
 
     this.authService.login(this.loginModel).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token); // Stocker le token si renvoyé
+        localStorage.setItem('authToken', response.token); // Stocker le token si renvoyé
+        localStorage.setItem('userId', response.userId);
         this.router.navigate(['/accueil']);
         this.loading = false;
       },

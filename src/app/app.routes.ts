@@ -6,6 +6,7 @@ import { AccueilComponent } from './pages/accueil/accueil.component';
 import { VehiculeClientComponent } from './pages/vehicule-client/vehicule-client.component';
 import { ForbiddenComponent } from './pages/error/forbidden/forbidden.component';
 import { NotFoundComponent } from './pages/error/not-found/not-found.component';
+import { PlanningComponent } from './pages/planning/planning.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
     children: [
       { path: 'accueil', component: AccueilComponent },
       { path: 'vehicule-client', component: VehiculeClientComponent },
+      { path : 'planning' , component: PlanningComponent},
       { path: '', redirectTo: 'accueil', pathMatch: 'full' }
     ],
   },

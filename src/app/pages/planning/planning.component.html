@@ -1,0 +1,110 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="demo-app-main mt-1 px-2 py-2">
+        <full-calendar *ngIf="calendarVisible()" [options]="calendarOptions()">
+          <ng-template #eventContent let-arg>
+            <b>{{ arg.timeText }}</b>
+            <i>{{ arg.event.title }}</i>
+          </ng-template>
+        </full-calendar>
+      </div>
+    </div>
+
+    <div class="col-sm-5 px-4 my-3" style="display: flex;align-items: center;">
+      <div *ngIf="dateRendezVous">
+        <div class="row card-body col-12 align-item-center">
+          <div class="px-2">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">
+                <i class="bi bi-calendar-check"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Date de rendez vous"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                [value]="
+                  dateRendezVous ? (dateRendezVous | date : 'dd-MM-yyyy') : ''
+                "
+                disabled
+              />
+            </div>
+
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Service</option>
+              <option *ngFor="let service of services" [value] = "service._id">{{ service.libelle }}</option>
+            </select>
+
+            <!-- Time slots section wrapped in row -->
+            <div class="mt-1">
+              <div class="row gap-x-1">
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <label class="card text-center p-2" for="time1">
+                    <input type="radio" name="timeSlot" id="time1" />
+                    <span class="time" label for="time1" >08:00</span>
+                  </label>
+                </div>
+                <label class="col-6 col-md-3 mt-2 px-2" for="time2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time2" />
+                    <span class="time">10:00</span>
+                  </div>
+                </label>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time3" />
+                    <span class="time">10:30</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time4" />
+                    <span class="time">16:00</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time5" />
+                    <span class="time">17:00</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time5" />
+                    <span class="time">17:00</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time5" />
+                    <span class="time" >17:00</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time5" />
+                    <span class="time">17:00</span>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 mt-2 px-2">
+                  <div class="card text-center p-2">
+                    <input type="radio" name="timeSlot" id="time5" />
+                    <span class="time">17:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <div class="row">
+                <button class="btn btn-primary" type="button">Prendre Rendez Vous</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

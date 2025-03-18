@@ -1,0 +1,108 @@
+<div class="container">
+  <h2 class="mt-4">Détail de ce réparation</h2>
+
+  <button
+    class="btn btn-primary mt-3"
+    data-bs-toggle="modal"
+    data-bs-target="#modalInsertion"
+  >
+    Ajouter
+  </button>
+
+  <div class="table-responsive mt-2">
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Pièce</th>
+          <th scope="col">Quantité</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Date et Heure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example rows (replace with dynamic data in Angular) -->
+        <tr>
+          <td>Filtre à huile</td>
+          <td>2</td>
+          <td>15.00 €</td>
+          <td>18/03/2025 14:30</td>
+        </tr>
+        <tr>
+          <td>Plaquettes de frein</td>
+          <td>4</td>
+          <td>45.00 €</td>
+          <td>18/03/2025 15:00</td>
+        </tr>
+        <tr>
+          <td>Bougie d'allumage</td>
+          <td>6</td>
+          <td>30.00 €</td>
+          <td>18/03/2025 16:15</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal insertion-->
+<div
+  class="modal fade"
+  id="modalInsertion"
+  tabindex="-1"
+  aria-labelledby="modalLabelInserion"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelInserion">Ajout détail réparation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        class="row g-3"
+      >
+        <div class="modal-body">
+          <div class="col-12">
+            <label for="type" class="form-label">Pièce</label>
+            <select
+              id="vehiculeSelect"
+              class="form-select"
+              formControlName="type_vehicule_id"
+            >
+              <option value="" selected disabled>Choisissez</option>
+            </select>
+          </div>
+          <div class="col-12 mt-2">
+            <label for="qte" class="form-label"
+              >Quantité</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="qte"
+              formControlName="qte"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="insertionModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span >Valider</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

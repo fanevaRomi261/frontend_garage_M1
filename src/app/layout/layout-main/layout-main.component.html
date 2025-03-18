@@ -44,7 +44,7 @@
 
     <div class="dropdown py-2">
       <img
-        src="https://scontent.ftnr2-2.fna.fbcdn.net/v/t39.30808-1/481081117_2946941145484022_2717288776568504193_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGaliCfruYKW_D_ubny9u6kkqUHja5VPYqSpQeNrlU9itlgV1dwWtQsHpmMolEqrZnb-2H4sstoBAiajVbi8PqZ&_nc_ohc=rfQV3E3l58oQ7kNvgEhQAx4&_nc_oc=AdjGhYK8wVYzFtV7War8Blo3ubQMR2mnyQdMVNIogjlo7gfGi0CiZduNJV1L3j4t1Bg&_nc_zt=24&_nc_ht=scontent.ftnr2-2.fna&_nc_gid=ABjhiggvCAui3I1DjCcToAx&oh=00_AYHIajvk0Mi6PKGCFrckpDFkdSaYW3-b1_VmSlEsqTMXUw&oe=67D672F0"
+        src="https://scontent.ftnr4-2.fna.fbcdn.net/v/t39.30808-6/481081117_2946941145484022_2717288776568504193_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHL_GUmtbHfF-GgdfM67CEtkqUHja5VPYqSpQeNrlU9iq9gccUWo8KGY9agn_6B8BRzfiMGfgFe9uCLY0yvshdm&_nc_ohc=wU0rclEMVHgQ7kNvgF-xjd9&_nc_oc=Adiiu1CVuQ_b8QXxAz6aEBqTYVvPxXP211Du9rOQoQm7OkdTLu0SJUi6GrwE5LQxh1s&_nc_zt=23&_nc_ht=scontent.ftnr4-2.fna&_nc_gid=HNJSmgrgoCWJatsIBB8qHg&oh=00_AYG0LgsyjtPzq_hQYGEg8VNSEwdQVkSnLbmUKUy8pBJH7Q&oe=67DF512E"
         alt=""
         width="30"
         height="30"
@@ -54,7 +54,7 @@
     </div>
     <div class="dropdown py-2">
       <img
-        src="https://scontent.ftnr2-2.fna.fbcdn.net/v/t39.30808-1/471609824_2051737435265148_3307263038832725503_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEtfQzt9xtligqZTRPB5K7tXdVIbJlC40Rd1UhsmULjREzP6GNsX183ifdmESoBNQpupqro48pJTcjYjER8iuIg&_nc_ohc=XgAU9Y8Aa9oQ7kNvgEQVWBJ&_nc_oc=Adg25i782dNALDW4iClhfM3PFs-hzHB6vZQo-d_PlJ7BXA89-MDz3ddrO0YDBU8gnf4&_nc_zt=24&_nc_ht=scontent.ftnr2-2.fna&_nc_gid=AOF1zOct0d4avpUsjVagQOY&oh=00_AYGNd6TLNAc3-DSIt3OCoKriyb4Rc213nFl36GwqPhIjNw&oe=67D674C4"
+        src="https://scontent.ftnr4-2.fna.fbcdn.net/v/t39.30808-1/471609824_2051737435265148_3307263038832725503_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=101&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEZDicLLt3erycHIusCw-82XdVIbJlC40Rd1UhsmULjRNUBQb707q-IjErQazIL8J1c1_7S3d0F9PwRHhAO9few&_nc_ohc=UhjB2BUVCjoQ7kNvgEy093M&_nc_oc=AdgAe_vS_69bZFHXkEaE_jR7qtC5TTMAnpKA2ARzRyIHJ8sc51ckUbUr7BjUupB9jSo&_nc_zt=24&_nc_ht=scontent.ftnr4-2.fna&_nc_gid=-pGQm99jhc2RKAw1bw3-9w&oh=00_AYHAyij76fYzLEH6SQ5MFkIgq669u6hSjhQDT92B5GStjA&oe=67DF3EC4"
         alt=""
         width="30"
         height="30"
@@ -142,26 +142,33 @@
                     height="30"
                     class="rounded-circle me-2"
                   />
-                  Rakoto Jean
+                  {{ user?.nom ?? 'AUCUNE INFO' }} {{ user?.prenom ?? '' }}
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-end"
                   aria-labelledby="navbarDarkDropdownMenuLink"
                 >
-                  <p class="m-2 text-center fw-bold">Rakoto Jean</p>
-                  <p class="m-2 text-center">Manager</p>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      ><i class="bi bi-box-arrow-right me-2"></i>Log out</a
-                    >
-                  </li>
+                  <ng-container *ngIf="user; else noUser">
+                    <p class="m-2 text-center fw-bold">{{ user.nom }} {{ user.prenom }}</p>
+                    <p class="m-2 text-center">{{ user.mail }}</p>
+                    <p class="m-2 text-center">Profil : {{ user.profil_id.libelle }}</p>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item" (click)="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Log out
+                      </a>
+                    </li>
+                  </ng-container>
+                  <ng-template #noUser>
+                    <p class="m-2 text-center text-muted">AUCUNE INFO</p>
+                  </ng-template>
                 </ul>
               </li>
             </ul>
           </div>
+          
         </div>
       </div>
     </nav>
@@ -179,7 +186,7 @@
       <!-- footer -->
       <div class="row">
         <!-- Footer -->
-        <footer class="bg-dark text-white py-4">
+        <footer class="bg-dark text-white py-4 mt-5">
           <div class="container">
             <div class="row">
               <div class="col-md-4">

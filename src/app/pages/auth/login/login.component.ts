@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { UtilisateurService } from '../../../services/utilisateur.service';
 
 @Component({
   selector: 'app-login',

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { UtilisateurService } from '../../../services/utilisateur.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -20,25 +21,26 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  doLogin() {
+  async doLogin() {
     this.loading = true;
 
     this.authService.login(this.loginModel).subscribe({
-      next: (response) => {
+      next: async (response) => {
         localStorage.setItem('authToken', response.token); // Stocker le token si renvoyé
         localStorage.setItem('userId', response.userId);
-        this.router.navigate(['/accueil']);
+        await this.authService.setUserInfo();
+        console.log(localStorage.getItem("userData"));
         this.loading = false;
+        this.router.navigate(['/accueil']);
       },
       error: (error) => {
         if (error.status === 400) {
-          this.errorMessage = "Email ou mot de passe incorrect."; // Message utilisateur
+          this.errorMessage = 'Email ou mot de passe incorrect.'; // Message utilisateur
         } else {
-          this.errorMessage = "Une erreur est survenue. Veuillez réessayer.";
+          this.errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
         }
         this.loading = false;
       },
-
     });
   }
 }

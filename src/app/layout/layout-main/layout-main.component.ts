@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { UtilisateurService } from '../../services/utilisateur.service';
+import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-layout-main',
@@ -14,7 +16,7 @@ export class LayoutMainComponent implements OnInit {
   isExpanded = false;
   user: any;
 
-  constructor(private utilisateurService: UtilisateurService,private router: Router) {}
+  constructor(private utilisateurService: UtilisateurService,private router: Router,private authService: AuthService) {}
 
   changeClass() {
     this.isExpanded = !this.isExpanded;
@@ -24,35 +26,15 @@ export class LayoutMainComponent implements OnInit {
     this.loadUserInfo();
   }
 
-  loadUserInfo() {
-    const id = localStorage.getItem('userId');
-    if (!id) {
-      console.warn('Aucun ID utilisateur trouvé dans le localStorage.');
-      return;
-    }
-
-    const cachedUser = localStorage.getItem('userData');
-
-    if (cachedUser) {
-      this.user = JSON.parse(cachedUser); // Utilisation du cache
-    } else {
-      this.utilisateurService.getUtilisateurByIdVehicule(id).subscribe({
-        next: (response) => {
-          this.user = response;
-          localStorage.setItem('userData', JSON.stringify(response));
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des données', error);
-          this.user = null;
-        },
-      });
+  async loadUserInfo() {
+    await this.authService.setUserInfo(); // Attendre que les données soient chargées
+    this.user = this.authService.getCurrentUser();
+    if (!this.user) {
+      this.router.navigate(['/login']);
     }
   }
 
-  logout(){
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userData");
-    this.user = null;
-    this.router.navigate(['/login']);
+  logout() {
+    this.authService.logout(); // Appelle directement le service
   }
 }

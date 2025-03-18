@@ -9,23 +9,49 @@ import { NotFoundComponent } from './pages/error/not-found/not-found.component';
 import { EntreeStockComponent } from './pages/entree-stock/entree-stock.component';
 import { EtatStockComponent } from './pages/etat-stock/etat-stock.component';
 import { DetailReparationComponent } from './pages/detail-reparation/detail-reparation.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: LayoutMainComponent, // Pages with the layout
     children: [
-      { path: 'accueil', component: AccueilComponent },
-      { path: 'vehicule-client', component: VehiculeClientComponent },
-      { path: 'entree-stock', component: EntreeStockComponent },
-      { path: 'etat-stock', component: EtatStockComponent },
-      { path: 'detail-reparation/:reparation_id', component: DetailReparationComponent },
-      { path: '', redirectTo: 'accueil', pathMatch: 'full' }
+      {
+        path: 'accueil',
+        component: AccueilComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client'] },
+      },
+      {
+        path: 'vehicule-client',
+        component: VehiculeClientComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['clients', 'technicien', 'admin'] },
+      },
+      {
+        path: 'entree-stock',
+        component: EntreeStockComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client', 'technicien', 'admin'] },
+      },
+      {
+        path: 'etat-stock',
+        component: EtatStockComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client', 'technicien', 'admin'] },
+      },
+      {
+        path: 'detail-reparation/:reparation_id',
+        component: DetailReparationComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client', 'technicien', 'admin'] },
+      },
+      { path: '', redirectTo: 'accueil', pathMatch: 'full' },
     ],
   },
   { path: 'forbidden', component: ForbiddenComponent }, // Page 403
   { path: 'not-found', component: NotFoundComponent }, // Page 404
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '**', redirectTo: 'not-found',pathMatch: 'full'},
+  { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

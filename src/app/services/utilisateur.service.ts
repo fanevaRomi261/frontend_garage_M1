@@ -11,7 +11,7 @@ export class UtilisateurService {
 
   constructor(private http: HttpClient) { }
 
-  getUtilisateurByIdVehicule(id : string): Observable<any> {
+  getUtilisateurById(id : string): Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`

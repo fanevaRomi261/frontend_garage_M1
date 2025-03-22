@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="demo-app-main mt-1 px-2 py-2">
+        <full-calendar *ngIf="calendarVisible()" [options]="calendarOptions()">
+          <ng-template #eventContent let-arg>
+            <b>{{ arg.timeText }}</b>
+            <i>{{ arg.event.title }}</i>
+          </ng-template>
+        </full-calendar>
+      </div>
+    </div>
+
+    <div *ngIf="dateRendezVous" class="col-sm-5 px-4 my-3" style="display: flex;align-items: center;">
+      <form class="row card-body col-12 align-item-center" [formGroup]="formulaire">
+        <div class="px-2">
+          <div class="input-group mb-3">
+            <!-- <span class="input-group-text" id="basic-addon1">
+              <i class="bi bi-calendar-check"></i>
+            </span> -->
+            <!-- <input type="date" class="form-control" placeholder="Date de rendez vous" aria-label="Username" aria-describedby="basic-addon1" 
+              [value]="dateRendezVous ? (dateRendezVous | date : 'dd/MM/yyyy') : '' " 
+              formControlName="date" readonly /> -->
+            <!-- <input type="date" class="form-control" formControlName="date" id="" > -->
+          </div>
+          
+          <div class="form-modal">
+            <label for="service">Service : </label>
+            <select class="form-select" formControlName="service" aria-label="Default select example">
+              <option *ngFor="let service of services" [value]="service._id">{{ service.libelle }}</option>
+            </select>
+          </div>
+          
+          <div class="row px-2 mt-2 mb-1">
+            <button class="btn btn-primary" type="button" (click)="submitCreneau(formulaire.value)">Trouver un créneau</button>
+          </div>
+
+          <div *ngIf="isCreneauShowed">
+            <p><small>Les créneaux libre pour la date du {{dateRendezVous | date: 'dd/MM/yyyy'}} pour {{serviceChoisi}}</small></p>
+          </div>
+
+          <div class="mt-1" *ngIf="isCreneauShowed">
+            <div class="row gap-x-1">
+              <ng-container *ngFor="let cren of creneau; let i = index">
+                <div class="col-6 col-md-3 mt-2 px-2" *ngIf="i % 2 === 0">
+                  <label class="card text-center p-2" for="{{ cren }}">
+                    <input type="radio" name="timeSlot" id="{{ cren.hours }}:{{ cren.minutes }}" />
+                    <span class="time">
+                      {{ cren.hours }}:{{ cren.minutes }} - {{ creneau[i + 1].hours }}:{{ creneau[i + 1].minutes }}
+                    </span>
+                  </label>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+    
+          <div class="mt-5">
+            <div class="row">
+              <button class="btn btn-success" *ngIf="isCreneauShowed" type="button" >Prendre Rendez Vous</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

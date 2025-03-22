@@ -6,6 +6,9 @@ import { AccueilComponent } from './pages/accueil/accueil.component';
 import { VehiculeClientComponent } from './pages/vehicule-client/vehicule-client.component';
 import { ForbiddenComponent } from './pages/error/forbidden/forbidden.component';
 import { NotFoundComponent } from './pages/error/not-found/not-found.component';
+
+import { PlanningComponent } from './pages/planning/planning.component';
+
 import { EntreeStockComponent } from './pages/entree-stock/entree-stock.component';
 import { EtatStockComponent } from './pages/etat-stock/etat-stock.component';
 import { DetailReparationComponent } from './pages/detail-reparation/detail-reparation.component';
@@ -14,16 +17,24 @@ import { GestionMecanicienComponent } from './pages/gestion-mecanicien/gestion-m
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
 import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
 
+
 export const routes: Routes = [
   {
     path: '',
     component: LayoutMainComponent, // Pages with the layout
     children: [
+
       {
         path: 'accueil',
         component: AccueilComponent,
         canActivate: [authGuard],
         data: { profiles: ['client','manager','mécanicien'] },
+      },
+       { 
+         path : 'planning' , 
+         component: PlanningComponent , 
+         canActivate : [authGuard], 
+         data : { profiles : ['client','manager','mécanicien'] },
       },
       {
         path: 'vehicule-client',
@@ -62,6 +73,7 @@ export const routes: Routes = [
         data: { profiles: ['manager'] },
       },
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
+
     ],
   },
   { path: 'forbidden', component: ForbiddenComponent }, // Page 403

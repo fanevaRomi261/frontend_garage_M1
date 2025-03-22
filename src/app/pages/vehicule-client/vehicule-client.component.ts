@@ -3,6 +3,7 @@ import { VehiculeService } from '../../services/vehicule.service';
 import { CommonModule } from '@angular/common';
 import { TypeVehiculeService } from '../../services/type-vehicule.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicule-client',
@@ -26,7 +27,7 @@ export class VehiculeClientComponent implements OnInit{
   isModificationLoading: boolean = false;
   isModificationSubmit:boolean = false;
 
-  constructor(private vehiculeService: VehiculeService,private typeVehiculeService: TypeVehiculeService) {
+  constructor(private vehiculeService: VehiculeService,private typeVehiculeService: TypeVehiculeService,private router: Router) {
     // insertion form
     this.insertionVehiculeForm = new FormGroup({
       immatriculation: new FormControl('', [Validators.required]),
@@ -150,5 +151,9 @@ export class VehiculeClientComponent implements OnInit{
     if (closeButton && closeButton instanceof HTMLButtonElement) {
       closeButton.click();
     }
+  }
+
+  goToHistoriqueReparation(vh:any){
+    this.router.navigate(['/historique-reparation-client',vh._id]);
   }
 }

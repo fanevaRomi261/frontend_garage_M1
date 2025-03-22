@@ -35,7 +35,7 @@ export class RegisterComponent{
       ]),
       contact: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^\+33[1-9](\d{2}){4}$/) // Validation pour un numéro français
+        // Validators.pattern(/^\+33[1-9](\d{2}){4}$/) // Validation pour un numéro français
       ]),
       dtn: new FormControl('', [
         Validators.required,

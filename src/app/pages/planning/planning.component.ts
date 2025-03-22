@@ -1,4 +1,4 @@
-import { Component , signal, ChangeDetectorRef , NgZone} from '@angular/core';
+import { Component , OnInit ,signal, ChangeDetectorRef , NgZone} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -13,20 +13,29 @@ import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { Service } from '../../model/Service.model';
 import { ServiceService } from '../../services/service.service';
+import { FormGroup, FormControl , ReactiveFormsModule } from '@angular/forms';
+import { PlanningService } from '../../services/planning.service';
+import { Time } from '../../model/time.model';
+
 
 @Component({
   selector: 'app-planning',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FullCalendarModule],
+  imports: [CommonModule, RouterOutlet, FullCalendarModule , ReactiveFormsModule],
   templateUrl: './planning.component.html',
   styleUrl: './planning.component.css'
 })
+
 export class PlanningComponent {
   dateRendezVous:Date | null = null;
   services: Service[] = [];
-
-
+  creneau: Time[] = []; // Utiliser any[] ou une interface appropriée pour vos créneaux
+  isCreneauShowed : boolean = false;
+  formulaire: FormGroup;
+  serviceChoisi : string = "";
   calendarVisible = signal(true);
+  
+  
   calendarOptions = signal<CalendarOptions>({
     plugins: [
       interactionPlugin,
@@ -59,10 +68,41 @@ export class PlanningComponent {
   });
   currentEvents = signal<EventApi[]>([]);
 
-  constructor(private changeDetector: ChangeDetectorRef , private serviceServices: ServiceService) {}
+  constructor(private changeDetector: ChangeDetectorRef , private serviceServices: ServiceService , private planningService : PlanningService) {
+    this.formulaire = new FormGroup({
+      'service' : new FormControl(''),
+      'heure_rdv' : new FormControl('')
+    });
+  }
 
   ngOnInit() : void{
     this.fetchServices();
+  }
+
+  submitCreneau(formValue: any) : void{
+    let date = "";
+    
+    if(this.dateRendezVous?.toDateString() != null){
+      date = this.dateRendezVous.toDateString();
+    }
+  
+    const service = formValue.service;  
+    this.fetchCreneauLibre(date,service);
+  }
+
+  fetchCreneauLibre(date: string, service: string):void{ 
+    console.log("fetch creneau is called");
+
+    this.planningService.getCreneauPropose(service, date).subscribe(
+      (data: Time[][]) => { 
+        this.creneau = data.flat();
+        this.isCreneauShowed = true;
+      },
+      (error) => {
+        console.error("Error fecthing creneau : ", error);
+      }
+    );
+   
   }
 
   fetchServices() : void{
@@ -76,22 +116,12 @@ export class PlanningComponent {
     );
   }
 
-  // handleCalendarToggle() {
-  //   this.calendarVisible.update((bool) => !bool);
-  // }
-
-  // handleWeekendsToggle() {
-  //   this.calendarOptions.update((options) => ({
-  //     ...options,
-  //     weekends: !options.weekends,
-  //   }));
-  // }
 
   handleDateSelect(selectInfo: DateSelectArg) {
     const calendarApi = selectInfo.view.calendar;
+
     console.log("before : " + this.dateRendezVous);
     this.dateRendezVous = selectInfo.start;
-    this.changeDetector.detectChanges();
     console.log("after : " + this.dateRendezVous);
   }
 
@@ -105,4 +135,7 @@ export class PlanningComponent {
     this.currentEvents.set(events);
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
+
+
+
 }

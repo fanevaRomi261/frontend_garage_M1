@@ -26,12 +26,19 @@ export class LoginComponent {
 
     this.authService.login(this.loginModel).subscribe({
       next: async (response) => {
+        console.log(response);
         localStorage.setItem('authToken', response.token); // Stocker le token si renvoyé
         localStorage.setItem('userId', response.userId);
+        localStorage.setItem('mustChangePassword',response.mustChangePassword.toString());
         await this.authService.setUserInfo();
         console.log(localStorage.getItem("userData"));
         this.loading = false;
-        this.router.navigate(['/accueil']);
+        if (response.mustChangePassword) {
+          alert(response.message);
+          this.router.navigate(['/change-password']);
+        } else {
+          this.router.navigate(['/accueil']);
+        }
       },
       error: (error) => {
         if (error.status === 400) {

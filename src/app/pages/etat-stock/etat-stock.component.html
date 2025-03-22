@@ -1,7 +1,8 @@
 <div class="container">
-  <h2 class="mt-2">Etat de stock de pièces</h2>
+  <h2 class="mt-4">Etat de stock de pièces</h2>
   <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover mt-2">
+
+    <table class="table table-striped table-bordered table-hover mt-2" *ngIf="!isListeLoading && etatStock.length > 0; else noEtat">
       <thead class="table-dark">
         <tr>
           <th scope="col">Piece</th>
@@ -9,11 +10,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Piece</td>
-          <td>Quantité</td>
+        <tr *ngFor="let etat of etatStock">
+          <td>{{etat.libelle}}</td>
+          <td>{{etat.stockRestant}}</td>
         </tr>
       </tbody>
     </table>
+
   </div>
+
+  <ng-template #noEtat>
+    <p class="mt-2">Aucun etat de stock</p>
+  </ng-template>
 </div>

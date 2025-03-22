@@ -1,0 +1,50 @@
+<div class="container">
+  <h2 class="mt-4">Historique des réparations sur ce véhicule</h2>
+  
+  <a routerLink="/vehicule-client" class="btn btn-secondary mb-4">Retour</a>
+
+  <div *ngIf="historique_reparation.length === 0" class="alert alert-warning">
+    Il n'y a aucune réparation pour ce véhicule.
+  </div>
+
+  <!-- Liste des réparations -->
+  <div *ngIf="historique_reparation.length > 0" class="accordion mt-4" id="accordionReparations">
+    <!-- Parcourir l'historique des réparations -->
+    <div
+      class="accordion-item"
+      *ngFor="let reparation of historique_reparation; let i = index"
+    >
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          [attr.data-bs-target]="'#rep' + i"
+          data-bs-toggle="collapse"
+        >
+          Réparation {{ i + 1 }} -
+          {{ reparation.date_debut | date : "dd/MM/yyyy" }}
+        </button>
+      </h2>
+      <div [id]="'rep' + i" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Nom Pièce</th>
+                <th>Quantité</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detail of reparation.detail_reparation_id">
+                <td>{{ detail.piece_id.libelle }}</td>
+                <td>{{ detail.quantite }}</td>
+                <td>{{ reparation.date_debut | date : "dd/MM/yyyy" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

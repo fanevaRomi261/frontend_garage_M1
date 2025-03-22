@@ -10,6 +10,9 @@ import { EntreeStockComponent } from './pages/entree-stock/entree-stock.componen
 import { EtatStockComponent } from './pages/etat-stock/etat-stock.component';
 import { DetailReparationComponent } from './pages/detail-reparation/detail-reparation.component';
 import { authGuard } from './guards/auth.guard';
+import { GestionMecanicienComponent } from './pages/gestion-mecanicien/gestion-mecanicien.component';
+import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
+import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
 
 export const routes: Routes = [
   {
@@ -20,31 +23,43 @@ export const routes: Routes = [
         path: 'accueil',
         component: AccueilComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client'] },
+        data: { profiles: ['client','manager','mécanicien'] },
       },
       {
         path: 'vehicule-client',
         component: VehiculeClientComponent,
         canActivate: [authGuard],
-        data: { profiles: ['clients', 'technicien', 'admin'] },
+        data: { profiles: ['client', 'manager', 'admin'] },
+      },
+      {
+        path: 'historique-reparation-client/:vehicule_id',
+        component: HistoriqueReparationClientComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client', 'manager', 'admin'] },
       },
       {
         path: 'entree-stock',
         component: EntreeStockComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'technicien', 'admin'] },
+        data: { profiles: ['manager'] },
       },
       {
         path: 'etat-stock',
         component: EtatStockComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'technicien', 'admin'] },
+        data: { profiles: ['manager'] },
       },
       {
         path: 'detail-reparation/:reparation_id',
         component: DetailReparationComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'technicien', 'admin'] },
+        data: { profiles: ['mecanicien', 'manager'] },
+      },
+      {
+        path: 'gestion-mecanicien',
+        component: GestionMecanicienComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['manager'] },
       },
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
     ],
@@ -53,5 +68,6 @@ export const routes: Routes = [
   { path: 'not-found', component: NotFoundComponent }, // Page 404
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'change-password', component: ChangePasswordComponent },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

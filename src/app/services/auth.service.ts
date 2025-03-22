@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import { UtilisateurService } from './utilisateur.service';
 import { Router } from '@angular/router';
@@ -20,6 +20,10 @@ export class AuthService {
   isLoggedIn(): boolean {
     const id = localStorage.getItem('userId');
     return !!id;
+  }
+
+  mustChangePwd() : boolean{
+    return localStorage.getItem('mustChangePassword') === 'true'; 
   }
 
   getUserProfile(): string | null {
@@ -83,5 +87,13 @@ export class AuthService {
   getCurrentUser(): any {
     const user = localStorage.getItem('userData');
     return user ? JSON.parse(user) : null;
+  }
+
+  changerPwd(oldPwd: string, newPwd: string): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put(`${this.apiUrl}/change-pwd`,{ oldPwd, newPwd },{ headers });
   }
 }

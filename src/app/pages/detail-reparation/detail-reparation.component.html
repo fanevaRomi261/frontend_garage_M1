@@ -51,11 +51,14 @@
   tabindex="-1"
   aria-labelledby="modalLabelInserion"
   aria-hidden="true"
+  (hidden.bs.modal)="onInsertionModalClose()"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalLabelInserion">Ajout détail réparation</h5>
+        <h5 class="modal-title" id="modalLabelInserion">
+          Ajout détail réparation
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -63,30 +66,68 @@
           aria-label="Close"
         ></button>
       </div>
+
       <form
         class="row g-3"
+        [formGroup]="formDetailReparation"
+        (ngSubmit)="insertionDetailReparation()"
       >
+        <div *ngIf="errorMessage" class="modal-header text-danger">
+            {{ errorMessage }}
+        </div>
         <div class="modal-body">
           <div class="col-12">
-            <label for="type" class="form-label">Pièce</label>
-            <select
-              id="vehiculeSelect"
-              class="form-select"
-              formControlName="type_vehicule_id"
-            >
-              <option value="" selected disabled>Choisissez</option>
+            <label for="piece" class="form-label">Pièce</label>
+            <select class="form-select" id="piece" formControlName="piece_id">
+              <option selected disabled>Choisissez</option>
+              <option *ngFor="let pc of listePiece" [value]="pc._id">
+                {{ pc.libelle }}
+              </option>
             </select>
+            <div
+              class="text-danger"
+              *ngIf="
+                isInsertFormSubmitted &&
+                formDetailReparation.controls['piece_id'].invalid
+              "
+            >
+              <span
+                *ngIf="formDetailReparation.controls['piece_id'].errors?.['required']"
+                >Le piece est requis.</span
+              >
+            </div>
           </div>
           <div class="col-12 mt-2">
-            <label for="qte" class="form-label"
-              >Quantité</label
-            >
+            <label for="qte" class="form-label">Quantité</label>
             <input
               type="text"
               class="form-control"
-              id="qte"
-              formControlName="qte"
+              id="quantite"
+              formControlName="quantite"
             />
+          </div>
+          <div
+            class="text-danger"
+            *ngIf="
+              isInsertFormSubmitted &&
+              formDetailReparation.controls['quantite'].invalid
+            "
+          >
+            <p
+              *ngIf="formDetailReparation.controls['quantite'].errors?.['required']"
+            >
+              La quantite est requise.
+            </p>
+            <p
+              *ngIf="formDetailReparation.controls['quantite']?.errors?.['pattern']"
+            >
+              La quantité doit être un nombre
+            </p>
+            <p
+              *ngIf="formDetailReparation.controls['quantite']?.errors?.['min']"
+            >
+              La quantité doit être supérieure à 0
+            </p>
           </div>
         </div>
         <div class="modal-footer">
@@ -99,7 +140,12 @@
             Fermer
           </button>
           <button type="submit" class="btn btn-primary">
-            <span >Valider</span>
+            <span
+              *ngIf="isInsertFormLoading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span *ngIf="!isInsertFormLoading">Valider</span>
+            <span *ngIf="isInsertFormLoading">En attente</span>
           </button>
         </div>
       </form>

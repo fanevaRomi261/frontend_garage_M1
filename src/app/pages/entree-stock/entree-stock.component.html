@@ -1,0 +1,84 @@
+<div class="container">
+  <h2 class="mt-2">Entrée de stock de pièces</h2>
+  <div class="my-3 p-3 bg-body rounded shadow-sm col-md-5">
+    <form [formGroup]="formEntree" (ngSubmit)="insererEntree()">
+      <div class="mb-3">
+        <label for="piece" class="form-label">Pièce</label>
+        <select class="form-select w-75" id="piece" formControlName="piece_id">
+          <option selected disabled>Choisissez</option>
+          <option *ngFor="let pc of listePiece" [value]="pc._id">
+            {{ pc.libelle }}
+          </option>
+        </select>
+        <div
+          class="text-danger"
+          *ngIf="
+            isFormSubmitted &&
+            formEntree.controls['piece_id'].invalid
+          "
+        >
+          <span
+            *ngIf="formEntree.controls['piece_id'].errors?.['required']"
+            >Le piece est requis.</span
+          >
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="quantite" class="form-label">Quantité</label>
+        <input
+          type="text"
+          class="form-control w-75"
+          id="quantite"
+          formControlName="quantite"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            isFormSubmitted &&
+            formEntree.controls['quantite'].invalid
+          "
+        >
+          <p
+            *ngIf="formEntree.controls['quantite'].errors?.['required']"
+            >La quantite est requise.</p
+          >
+          <p *ngIf="formEntree.controls['quantite']?.errors?.['pattern']">
+            La quantité doit être un nombre
+          </p>
+          <p *ngIf="formEntree.controls['quantite']?.errors?.['min']">
+            La quantité doit être supérieure à 0
+          </p>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="date_entree" class="form-label">Date d'entrée</label>
+        <input
+          type="datetime-local"
+          class="form-control w-75"
+          id="date_entree"
+          formControlName="date_entree"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            isFormSubmitted &&
+            formEntree.controls['date_entree'].invalid
+          "
+        >
+          <span
+            *ngIf="formEntree.controls['date_entree'].errors?.['required']"
+            >La date est requise.</span
+          >
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span
+          *ngIf="isFormLoading"
+          class="spinner-border spinner-border-sm me-2"
+        ></span>
+        <span *ngIf="!isFormLoading">Valider</span>
+        <span *ngIf="isFormLoading">En attente</span>
+      </button>
+    </form>
+  </div>
+</div>

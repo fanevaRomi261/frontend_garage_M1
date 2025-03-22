@@ -1,0 +1,523 @@
+<div class="container">
+  <h2 class="mt-2">Liste des mécaniciens</h2>
+
+  <button
+    class="btn btn-primary mt-3"
+    data-bs-toggle="modal"
+    data-bs-target="#modalInsertion"
+  >
+    Ajouter
+  </button>
+
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-3" *ngIf="isListeLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div
+    class="table-responsive"
+    *ngIf="!isListeLoading && mecanicien.length > 0; else noVehicles"
+  >
+    <table class="table table-striped table-bordered table-hover mt-2">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Prénom</th>
+          <th scope="col">Mail</th>
+          <th scope="col">Date de naissance</th>
+          <th scope="col">Contact</th>
+          <th scope="col">Créé le</th>
+          <th scope="col">Etat</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vh of mecanicien">
+          <td>{{ vh.nom }}</td>
+          <td>{{ vh.prenom }}</td>
+          <td>{{ vh.mail }}</td>
+          <td>{{ vh.dtn | date : "dd/MM/yyyy" }}</td>
+          <td>{{ vh.contact }}</td>
+          <td>{{ vh.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+          <td>
+            <i
+              [ngClass]="{
+                bis: true,
+                'bi-check-circle': vh.isActif === 1,
+                'bi-x-circle': vh.isActif === 0,
+                'text-success': vh.isActif === 1,
+                'text-danger': vh.isActif === 0
+              }"
+            ></i>
+            <span>{{ vh.isActif === 1 ? "Actif" : "Inactif" }}</span>
+          </td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-1"
+              title="Modifier"
+              data-bs-toggle="modal"
+              data-bs-target="#modalModification"
+              (click)="openModificationModal(vh)"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <button
+              [disabled]="vh.isActif === 0"
+              class="btn btn-danger btn-sm me-1"
+              title="Supprimer"
+              data-bs-toggle="modal"
+              data-bs-target="#modalConfirmation"
+              (click)="setUserIdToDelete(vh._id)"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noVehicles>
+    <p>Aucun mécanicien trouvé.</p>
+  </ng-template>
+</div>
+
+<!-- Modal insertion-->
+<div
+  class="modal fade"
+  id="modalInsertion"
+  tabindex="-1"
+  aria-labelledby="modalLabelInserion"
+  aria-hidden="true"
+  (hidden.bs.modal)="onInsertionModalClose()"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelInserion">Ajout mécanicien</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        class="row g-3"
+        [formGroup]="insertionMecanicienForm"
+        (ngSubmit)="ajouterMecanicien()"
+      >
+        <div *ngIf="errorMessageInsertion" class="modal-header text-danger">
+          {{ errorMessageInsertion }}
+        </div>
+        <div class="modal-body">
+          <!-- Nom -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="nom"
+                placeholder="Nom"
+                formControlName="nom"
+                required
+              />
+              <label for="nom" class="form-label">Nom</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isInsertionSubmit &&
+                  insertionMecanicienForm.controls['nom'].invalid
+                "
+              >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['nom'].errors?.['required']"
+                  >Le nom est requis.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Prénom -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="prenom"
+                placeholder="Prénom"
+                formControlName="prenom"
+                required
+              />
+              <label for="prenom" class="form-label">Prénom</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isInsertionSubmit &&
+                  insertionMecanicienForm.controls['prenom'].invalid
+                "
+              >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['prenom'].errors?.['required']"
+                  >Le prénom est requis.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="name@example.com"
+                formControlName="mail"
+                required
+              />
+              <label for="email" class="form-label">Email</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isInsertionSubmit &&
+                  insertionMecanicienForm.controls['mail'].invalid
+                "
+              >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['mail'].errors?.['required']"
+                  >L'email est requis.</span
+                >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['mail'].errors?.['email']"
+                  >Email invalide.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="contact"
+                placeholder="Contact"
+                formControlName="contact"
+                required
+              />
+              <label for="contact" class="form-label">Contact</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isInsertionSubmit &&
+                  insertionMecanicienForm.controls['contact'].invalid
+                "
+              >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['contact'].errors?.['required']"
+                  >Le numéro de téléphone est requis.</span
+                >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['contact'].errors?.['pattern']"
+                  >Numéro de téléphone invalide.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Date de naissance -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="date"
+                class="form-control"
+                id="dtn"
+                formControlName="dtn"
+                required
+              />
+              <label for="dtn" class="form-label">Date de naissance</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isInsertionSubmit &&
+                  insertionMecanicienForm.controls['dtn'].invalid
+                "
+              >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['dtn'].errors?.['required']"
+                  >La date de naissance est requise.</span
+                >
+                <span
+                  *ngIf="insertionMecanicienForm.controls['dtn'].errors?.['pattern']"
+                  >Date invalide (format attendu: YYYY-MM-DD).</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="insertionModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span
+              *ngIf="isInsertionLoading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span *ngIf="!isInsertionLoading">Valider</span>
+            <span *ngIf="isInsertionLoading">En attente</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal modification-->
+<div
+  class="modal fade"
+  id="modalModification"
+  tabindex="-1"
+  aria-labelledby="modalLabelModification"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelModification">
+          Modifier mécanicien
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        class="row g-3"
+        [formGroup]="modificationMecanicienForm"
+        (ngSubmit)="modifierMecanicien()"
+      >
+        <div class="modal-body">
+          <!-- Nom -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="nom"
+                placeholder="Nom"
+                formControlName="nom"
+                required
+              />
+              <label for="nom" class="form-label">Nom</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isModificationSubmit &&
+                  modificationMecanicienForm.controls['nom'].invalid
+                "
+              >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['nom'].errors?.['required']"
+                  >Le nom est requis.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Prénom -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="prenom"
+                placeholder="Prénom"
+                formControlName="prenom"
+                required
+              />
+              <label for="prenom" class="form-label">Prénom</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isModificationSubmit &&
+                  modificationMecanicienForm.controls['prenom'].invalid
+                "
+              >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['prenom'].errors?.['required']"
+                  >Le prénom est requis.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="name@example.com"
+                formControlName="mail"
+                required
+              />
+              <label for="email" class="form-label">Email</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isModificationSubmit &&
+                  modificationMecanicienForm.controls['mail'].invalid
+                "
+              >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['mail'].errors?.['required']"
+                  >L'email est requis.</span
+                >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['mail'].errors?.['email']"
+                  >Email invalide.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="contact"
+                placeholder="Contact"
+                formControlName="contact"
+                required
+              />
+              <label for="contact" class="form-label">Contact</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isModificationSubmit &&
+                  modificationMecanicienForm.controls['contact'].invalid
+                "
+              >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['contact'].errors?.['required']"
+                  >Le numéro de téléphone est requis.</span
+                >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['contact'].errors?.['pattern']"
+                  >Numéro de téléphone invalide.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Date de naissance -->
+          <div class="col-12">
+            <div class="form-floating mb-3">
+              <input
+                type="date"
+                class="form-control"
+                id="dtn"
+                formControlName="dtn"
+                required
+              />
+              <label for="dtn" class="form-label">Date de naissance</label>
+              <div
+                class="text-danger"
+                *ngIf="
+                  isModificationSubmit &&
+                  modificationMecanicienForm.controls['dtn'].invalid
+                "
+              >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['dtn'].errors?.['required']"
+                  >La date de naissance est requise.</span
+                >
+                <span
+                  *ngIf="modificationMecanicienForm.controls['dtn'].errors?.['pattern']"
+                  >Date invalide (format attendu: YYYY-MM-DD).</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              id="actif" 
+              formControlName="isActif" 
+            />
+            <label class="form-check-label" for="actif">Etat</label>
+          </div>
+          
+          
+        </div>
+        <div class="modal-footer">
+          <button
+            id="modificationModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">Valider</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmation suppression -->
+<div
+  class="modal fade"
+  id="modalConfirmation"
+  tabindex="-1"
+  aria-labelledby="modalConfirmationLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmationLabel">Confirmation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        class="modal-body d-flex flex-column justify-content-center align-items-center"
+        style="min-height: 200px"
+      >
+        <i class="bi bi-exclamation-triangle text-danger display-4 mb-3"></i>
+        <p class="text-center">
+          Êtes-vous sûr de desactiver l'accès à ce mécanicien
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="confirmationModalClose">
+          Non
+        </button>
+        <button type="button" class="btn btn-danger" (click)="desactiverMecanicien()">Oui</button>
+      </div>
+    </div>
+  </div>
+</div>

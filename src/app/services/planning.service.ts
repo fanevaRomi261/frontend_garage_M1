@@ -18,6 +18,15 @@ export class PlanningService {
     }
     return this.http.post(`${this.apiUrl}/proposeCreneau`,body);
   }
+  
+  convertStringToIntervalle(horaire: string): number[] {
+    const [start, end] = horaire.split("&").map(time => {
+      const [hours, minutes] = time.split(":").map(Number);
+      return hours * 60 + minutes;
+    });
+  
+    return [start, end];
+  }
 
 
 

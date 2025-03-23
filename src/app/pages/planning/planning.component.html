@@ -12,56 +12,129 @@
     </div>
 
     <div *ngIf="dateRendezVous" class="col-sm-5 px-4 my-3" style="display: flex;align-items: center;">
-      <form class="row card-body col-12 align-item-center" [formGroup]="formulaire">
-        <div class="px-2">
-          <div class="input-group mb-3">
-            <!-- <span class="input-group-text" id="basic-addon1">
-              <i class="bi bi-calendar-check"></i>
-            </span> -->
-            <!-- <input type="date" class="form-control" placeholder="Date de rendez vous" aria-label="Username" aria-describedby="basic-addon1" 
-              [value]="dateRendezVous ? (dateRendezVous | date : 'dd/MM/yyyy') : '' " 
-              formControlName="date" readonly /> -->
-            <!-- <input type="date" class="form-control" formControlName="date" id="" > -->
+      
+      <form class="row card-body col-12 align-item-center" [ngClass]="{'d-none' : choixUtilisateur}"  [formGroup]="formulaireCreneau">
+        <div class="px-2">  
+          <div class="gap-x-1 mt-1 mb-3"> 
+            <div class="row">
+
+                <div class="alert alert-primary d-flex align-items-center" role="alert" *ngIf="vehiculeUtilisateur.length === 0">
+                  <i class="bi bi-info-circle"></i>
+                  <div class="mx-2">
+                    Veuillez d'abord ajouter votre voiture <a href="/vehicule-client" class="alert-link">ici</a>.
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-md-6 mt-2 px-2" *ngFor="let vehicule of vehiculeUtilisateur">
+                  <label class="card text-center p-2" for="{{ vehicule._id }}">
+                    <input type="radio" formControlName="vehiculeCreneau" id="{{ vehicule._id }}" value="{{ vehicule._id }}" />
+                    <span class="time">
+                      <div class="title">
+                        {{vehicule.marque}} {{vehicule.modele}}
+                      </div>
+                      <div class="matriculation">
+                        {{vehicule.immatriculation}}
+                      </div>
+                    </span>
+                  </label>
+                </div>
+            </div>
           </div>
           
           <div class="form-modal">
             <label for="service">Service : </label>
-            <select class="form-select" formControlName="service" aria-label="Default select example">
+            <select class="form-select" formControlName="serviceCreneau" aria-label="Default select example">
               <option *ngFor="let service of services" [value]="service._id">{{ service.libelle }}</option>
             </select>
           </div>
           
           <div class="row px-2 mt-2 mb-1">
-            <button class="btn btn-primary" type="button" (click)="submitCreneau(formulaire.value)">Trouver un créneau</button>
+            <button class="btn btn-primary" type="button" (click)="submitCreneau(formulaireCreneau.value)">Trouver un créneau</button>
           </div>
 
-          <div *ngIf="isCreneauShowed">
-            <p><small>Les créneaux libre pour la date du {{dateRendezVous | date: 'dd/MM/yyyy'}} pour {{serviceChoisi}}</small></p>
+        </div>
+      </form>
+
+      <form class="row card-body col-12 align-item-center"  [formGroup]="formulaireRendezvous" [ngClass]="{'d-none' : !choixUtilisateur}">  
+        
+        <div class="mt-1" *ngIf="isCreneauShowed">
+
+          <div class="form-modal">
+            <label for="date">Date : </label>
+            
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"> 
+                  <i class="bi bi-calendar"></i>
+                </span>
+              </div>
+              <input type="date" id="" class="form-input" placeholder="{{dateRendezVous |  date:'yyyy-MM-dd'}}" [value]="dateRendezVous |  date:'yyyy-MM-dd'" readonly>
+            </div>
           </div>
 
-          <div class="mt-1" *ngIf="isCreneauShowed">
+          <div class="form-modal">
+            <label for="service">Service : </label>
+            
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"> 
+                  <i class="bi bi-check2-circle"></i>
+                </span>
+              </div>
+              <input type="text" class="form-input" id="service" placeholder="{{ serviceCreneauChoisi.libelle }}" readonly >
+            </div>
+
+          </div>
+
+          <div class="form-modal">
+            <label for="vehicule"> Vehicule : </label>
+            
+            <div class="card text-center p-2">
+              <span class="time">
+                <div class="title">
+                  {{vehiculeCreneauChoisi.marque}} {{vehiculeCreneauChoisi.modele}}
+                </div>
+                <div class="matriculation">
+                  {{vehiculeCreneauChoisi.immatriculation}}
+                </div>
+              </span>
+            </div>
+
+          </div>
+
+          <div class="form-modal mt-2">
+            <label for="creneau"> Créneau possible : </label>
             <div class="row gap-x-1">
               <ng-container *ngFor="let cren of creneau; let i = index">
                 <div class="col-6 col-md-3 mt-2 px-2" *ngIf="i % 2 === 0">
+                  
                   <label class="card text-center p-2" for="{{ cren }}">
-                    <input type="radio" name="timeSlot" id="{{ cren.hours }}:{{ cren.minutes }}" />
+                    <input type="radio" id="{{ cren }}" formControlName="heure_rdv" value="{{ cren.hours }}:{{ cren.minutes }}&{{ creneau [i+1].hours }}:{{creneau[i+1].minutes}}" id="{{ cren.hours }}:{{ cren.minutes }}" />
                     <span class="time">
-                      {{ cren.hours }}:{{ cren.minutes }} - {{ creneau[i + 1].hours }}:{{ creneau[i + 1].minutes }}
+                      {{ cren.hours }}h{{ cren.minutes !== 0 ? cren.minutes : ''}} - 
+                      {{ creneau[i + 1].hours }}h{{ creneau[i + 1].minutes !== 0 ? creneau[i + 1].minutes : '' }}
                     </span>
                   </label>
                 </div>
               </ng-container>
             </div>
           </div>
-    
-          <div class="mt-5">
-            <div class="row">
-              <button class="btn btn-success" *ngIf="isCreneauShowed" type="button" >Prendre Rendez Vous</button>
-            </div>
+          
+          <div class="row mt-3 mb-1">
+            <button class="btn btn-success" type="button" (click)="submitRendezVous(formulaireRendezvous.value)" >Prendre Rendez Vous </button>
           </div>
         </div>
+  
+          <div class="row mt-3">
+            <button class="btn btn-secondary" type="button" (click)="handleRetour()" >Retour</button>
+          </div>
+      
       </form>
 
+
     </div>
+
+    
+
   </div>
 </div>

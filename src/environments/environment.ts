@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:5000',
+  apiUrl: 'https://backend-garage-m1.onrender.com',
 };

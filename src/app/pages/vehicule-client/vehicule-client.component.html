@@ -1,0 +1,379 @@
+<div class="container">
+  <h2 class="mt-2">Liste de mes vehicules</h2>
+
+  <button
+    class="btn btn-primary mt-3"
+    data-bs-toggle="modal"
+    data-bs-target="#modalInsertion"
+  >
+    Ajouter
+  </button>
+
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-3" *ngIf="isListeLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div
+    class="table-responsive"
+    *ngIf="!isListeLoading && vehicule.length > 0; else noVehicles"
+  >
+    <table class="table table-striped table-bordered table-hover mt-2">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Immatriculation</th>
+          <th scope="col">Marque</th>
+          <th scope="col">Modèle</th>
+          <th scope="col">Type</th>
+          <th scope="col">Créé le</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vh of vehicule">
+          <td>{{ vh.immatriculation }}</td>
+          <td>{{ vh.marque }}</td>
+          <td>{{ vh.modele }}</td>
+          <td>{{ vh.type_vehicule_id.libelle }}</td>
+          <td>{{ vh.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-1"
+              title="Modifier"
+              data-bs-toggle="modal"
+              data-bs-target="#modalModification"
+              (click)="openModificationModal(vh)"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button
+              class="btn btn-success btn-sm me-1"
+              title="Detail"
+              (click)="goToHistoriqueReparation(vh)"
+            >
+              <i class="bi bi-clock-history"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noVehicles>
+    <p>Aucun véhicule trouvé.</p>
+  </ng-template>
+</div>
+
+<!-- Modal insertion-->
+<div
+  class="modal fade"
+  id="modalInsertion"
+  tabindex="-1"
+  aria-labelledby="modalLabelInserion"
+  aria-hidden="true"
+  (hidden.bs.modal)="onInsertionModalClose()"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelInserion">Ajout vehicule</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        class="row g-3"
+        [formGroup]="insertionVehiculeForm"
+        (ngSubmit)="ajouterVehicule()"
+      >
+        <div class="modal-body">
+          <div class="col-12">
+            <label for="immatriculation" class="form-label"
+              >Immatriculation</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="immatriculation"
+              formControlName="immatriculation"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                isInsertionSubmit &&
+                insertionVehiculeForm.controls['immatriculation'].invalid
+              "
+            >
+              <span
+                *ngIf="insertionVehiculeForm.controls['immatriculation'].errors?.['required']"
+                >Le nom est requis.</span
+              >
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="marque" class="form-label">Marque</label>
+            <input
+              type="text"
+              class="form-control"
+              id="marque"
+              formControlName="marque"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                isInsertionSubmit &&
+                insertionVehiculeForm.controls['marque'].invalid
+              "
+            >
+              <span
+                *ngIf="insertionVehiculeForm.controls['marque'].errors?.['required']"
+                >La marque est requise.</span
+              >
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="modele" class="form-label">Modèle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="modele"
+              formControlName="modele"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                isInsertionSubmit &&
+                insertionVehiculeForm.controls['modele'].invalid
+              "
+            >
+              <span
+                *ngIf="insertionVehiculeForm.controls['modele'].errors?.['required']"
+                >Le modele est requis.</span
+              >
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="type" class="form-label">Type</label>
+            <select
+              id="vehiculeSelect"
+              class="form-select"
+              formControlName="type_vehicule_id"
+            >
+              <option value="" selected disabled>Choisissez</option>
+              <option *ngFor="let tv of typeVehicule" [value]="tv._id">
+                {{ tv.libelle }}
+              </option>
+            </select>
+            <div
+              class="text-danger"
+              *ngIf="
+                isInsertionSubmit &&
+                insertionVehiculeForm.controls['type_vehicule_id'].invalid
+              "
+            >
+              <span
+                *ngIf="insertionVehiculeForm.controls['type_vehicule_id'].errors?.['required']"
+                >Le type est requis.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="insertionModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span
+              *ngIf="isInsertionLoading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span *ngIf="!isInsertionLoading">Valider</span>
+            <span *ngIf="isInsertionLoading">En attente</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal modification-->
+<div
+  class="modal fade"
+  id="modalModification"
+  tabindex="-1"
+  aria-labelledby="modalLabelModification"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelModification">
+          Modifier vehicule
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        class="row g-3"
+        [formGroup]="modificationVehiculeForm"
+        (ngSubmit)="modifierVehicule()"
+      >
+        <div class="modal-body">
+          <div class="col-12">
+            <label for="immatriculation" class="form-label"
+              >Immatriculation</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="immatriculation"
+              formControlName="immatriculation"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                isModificationSubmit &&
+                modificationVehiculeForm.controls['immatriculation'].invalid
+              "
+            >
+              <span
+                *ngIf="modificationVehiculeForm.controls['immatriculation'].errors?.['required']"
+                >Le nom est requis.</span
+              >
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="marque" class="form-label">Marque</label>
+            <input
+              type="text"
+              class="form-control"
+              id="marque"
+              formControlName="marque"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                isModificationSubmit &&
+                modificationVehiculeForm.controls['marque'].invalid
+              "
+            >
+              <span
+                *ngIf="modificationVehiculeForm.controls['marque'].errors?.['required']"
+                >Le nom est requis.</span
+              >
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="modele" class="form-label">Modèle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="modele"
+              formControlName="modele"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                isModificationSubmit &&
+                modificationVehiculeForm.controls['modele'].invalid
+              "
+            >
+              <span
+                *ngIf="modificationVehiculeForm.controls['modele'].errors?.['required']"
+                >Le nom est requis.</span
+              >
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="type" class="form-label">Type</label>
+            <select
+              id="vehiculeSelect"
+              class="form-select"
+              formControlName="type_vehicule_id"
+            >
+              <option value="" selected disabled>Choisissez</option>
+              <option *ngFor="let tv of typeVehicule" [value]="tv._id">
+                {{ tv.libelle }}
+              </option>
+            </select>
+            <div
+              class="text-danger"
+              *ngIf="
+                isModificationSubmit &&
+                modificationVehiculeForm.controls['type_vehicule_id'].invalid
+              "
+            >
+              <span
+                *ngIf="modificationVehiculeForm.controls['type_vehicule_id'].errors?.['required']"
+                >Le nom est requis.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="modificationModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">Valider</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmation suppression
+<div
+  class="modal fade"
+  id="modalConfirmation"
+  tabindex="-1"
+  aria-labelledby="modalConfirmationLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmationLabel">Confirmation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        class="modal-body d-flex flex-column justify-content-center align-items-center"
+        style="min-height: 200px"
+      >
+        <i class="bi bi-exclamation-triangle text-danger display-4 mb-3"></i>
+        <p class="text-center">
+          Êtes-vous sûr de vouloir supprimer ce véhicule ?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Non
+        </button>
+        <button type="button" class="btn btn-danger">Oui</button>
+      </div>
+    </div>
+  </div>
+</div> -->

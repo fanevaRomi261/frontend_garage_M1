@@ -4,122 +4,152 @@
       <div class="col-12 col-xxl-11">
         <div class="card border-light-subtle shadow-sm">
           <div class="row g-0">
-            <div
-              class="col-12 col-md-6 d-flex align-items-center justify-content-center"
-            >
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
               <div class="col-12 col-lg-11 col-xl-10">
                 <div class="card-body p-3 p-md-4 p-xl-5">
                   <div class="row">
                     <div class="col-12">
                       <div class="mb-3">
                         <div class="text-center mb-3">
-                          <a href="#!">
-                            <img
-                              src="./assets/img/logo.png"
-                              alt="BootstrapBrain Logo"
-                              width="140"
-                              height="90"
-                            />
+                          <a href="#">
+                            <img src="assets/img/logo_v2.png" alt="Logo" width="140" height="90" />
                           </a>
                         </div>
                         <h4 class="text-center">Inscription</h4>
                       </div>
                     </div>
                   </div>
-                  <form action="#!">
-                    <div class="row gy-3 overflow-hidden">
+
+                  <div class="mb-3" style="height: 20px;">
+                    <p *ngIf="errorMessage" class="text-danger text-center">{{ errorMessage }}</p>
+                  </div>
+                  
+                  <form class="needs-validation" [formGroup]="formUser" (ngSubmit)="doRegister()">
+                    <div class="row gy-3">
                       <!-- Nom -->
                       <div class="col-12 col-md-6">
                         <div class="form-floating mb-3">
                           <input
                             type="text"
                             class="form-control"
-                            name="nom"
                             id="nom"
                             placeholder="Nom"
+                            [disabled]="loading"
+                            formControlName="nom"
                             required
                           />
                           <label for="nom" class="form-label">Nom</label>
+                          <div class="text-danger" *ngIf="submitted && formUser.controls['nom'].invalid">
+                            <span *ngIf="formUser.controls['nom'].errors?.['required']">Le nom est requis.</span>
+                          </div>
                         </div>
                       </div>
+
                       <!-- Prénom -->
                       <div class="col-12 col-md-6">
                         <div class="form-floating mb-3">
                           <input
                             type="text"
                             class="form-control"
-                            name="prenom"
                             id="prenom"
                             placeholder="Prénom"
+                            [disabled]="loading"
+                            formControlName="prenom"
                             required
                           />
                           <label for="prenom" class="form-label">Prénom</label>
+                          <div class="text-danger" *ngIf="submitted && formUser.controls['prenom'].invalid">
+                            <span *ngIf="formUser.controls['prenom'].errors?.['required']">Le prénom est requis.</span>
+                          </div>
                         </div>
                       </div>
+
                       <!-- Email -->
                       <div class="col-12">
                         <div class="form-floating mb-3">
                           <input
                             type="email"
                             class="form-control"
-                            name="email"
                             id="email"
                             placeholder="name@example.com"
+                            [disabled]="loading"
+                            formControlName="mail"
                             required
                           />
                           <label for="email" class="form-label">Email</label>
+                          <div class="text-danger" *ngIf="submitted && formUser.controls['mail'].invalid">
+                            <span *ngIf="formUser.controls['mail'].errors?.['required']">L'email est requis.</span>
+                            <span *ngIf="formUser.controls['mail'].errors?.['email']">Email invalide.</span>
+                          </div>
                         </div>
                       </div>
+
                       <!-- Mot de passe -->
                       <div class="col-12">
                         <div class="form-floating mb-3">
                           <input
                             type="password"
                             class="form-control"
-                            name="password"
                             id="password"
                             placeholder="Password"
+                            [disabled]="loading"
+                            formControlName="pwd"
                             required
                           />
-                          <label for="password" class="form-label"
-                            >Mot de passe</label
-                          >
+                          <label for="password" class="form-label">Mot de passe</label>
+                          <div class="text-danger" *ngIf="submitted && formUser.controls['pwd'].invalid">
+                            <span *ngIf="formUser.controls['pwd'].errors?.['required']">Le mot de passe est requis.</span>
+                            <span *ngIf="formUser.controls['pwd'].errors?.['minlength']">Le mot de passe doit contenir au moins 8 caractères.</span>
+                            <span *ngIf="formUser.controls['pwd'].errors?.['pattern']">Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial.</span>
+                          </div>
                         </div>
                       </div>
+
                       <!-- Contact -->
                       <div class="col-12">
                         <div class="form-floating mb-3">
                           <input
                             type="text"
                             class="form-control"
-                            name="contact"
                             id="contact"
+                            placeholder="Contact"
+                            [disabled]="loading"
+                            formControlName="contact"
                             required
                           />
-                          <label for="contact" class="form-label"
-                            >Contact</label
-                          >
+                          <label for="contact" class="form-label">Contact</label>
+                          <div class="text-danger" *ngIf="submitted && formUser.controls['contact'].invalid">
+                            <span *ngIf="formUser.controls['contact'].errors?.['required']">Le numéro de téléphone est requis.</span>
+                            <span *ngIf="formUser.controls['contact'].errors?.['pattern']">Numéro de téléphone invalide.</span>
+                          </div>
                         </div>
                       </div>
+
                       <!-- Date de naissance -->
                       <div class="col-12">
                         <div class="form-floating mb-3">
                           <input
                             type="date"
                             class="form-control"
-                            name="dtn"
                             id="dtn"
+                            [disabled]="loading"
+                            formControlName="dtn"
                             required
                           />
-                          <label for="dtn" class="form-label"
-                            >Date de naissance</label
-                          >
+                          <label for="dtn" class="form-label">Date de naissance</label>
+                          <div class="text-danger" *ngIf="submitted && formUser.controls['dtn'].invalid">
+                            <span *ngIf="formUser.controls['dtn'].errors?.['required']">La date de naissance est requise.</span>
+                            <span *ngIf="formUser.controls['dtn'].errors?.['pattern']">Date invalide (format attendu: YYYY-MM-DD).</span>
+                          </div>
                         </div>
                       </div>
+
                       <div class="col-12">
                         <div class="d-grid">
                           <button class="btn btn-dark btn-lg" type="submit">
-                            Valider
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                            <span *ngIf="!loading">Valider</span>
+                            <span *ngIf="loading">En attente</span>
                           </button>
                         </div>
                       </div>
@@ -127,14 +157,8 @@
                   </form>
                   <div class="row">
                     <div class="col-12">
-                      <div
-                        class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-3"
-                      >
-                        <a
-                          routerLink="/login"
-                          class="link-secondary text-decoration-none"
-                          >Se connecter</a
-                        >
+                      <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-3">
+                        <a routerLink="/login" class="link-secondary text-decoration-none">Se connecter</a>
                       </div>
                     </div>
                   </div>
@@ -145,8 +169,8 @@
               <img
                 class="img-fluid rounded-start w-100 h-100 object-fit-cover"
                 loading="lazy"
-                src="https://img.freepik.com/photos-gratuite/main-mecanicien-verifiant-reparant-voiture-cassee-dans-garage-service-voiture_146671-19717.jpg?t=st=1741353125~exp=1741356725~hmac=fd338c78a1a358db9112ccfaba0716c08f8a5f8c19b646dd0de94edac1abdcfd&w=1380"
-                alt="Welcome back you've been missed!"
+                src="assets/img/login_img.jpg"
+                alt="Image garage"
               />
             </div>
           </div>

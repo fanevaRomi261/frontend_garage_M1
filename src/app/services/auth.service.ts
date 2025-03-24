@@ -36,6 +36,7 @@ export class AuthService {
   }
 
   login(credentials: { mail: string; pwd: string }): Observable<any> {
+    console.log("url"+ this.apiUrl);
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 

@@ -70,11 +70,16 @@ export class RegisterComponent{
       next: (response) => {
         this.loading = false;
         alert("Inscription validée, veuillez vous reconnecter");
-        this.router.navigate(['/accueil']);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
-        console.log(error);
-        this.errorMessage = error.error.message;
+        // console.log(error.error.errors);
+        if (error.error?.errors && Array.isArray(error.error.errors)) {
+          this.errorMessage = error.error.errors.map((err: any) => err.msg).join(' | ');
+        } else {
+          this.errorMessage = "Une erreur s'est produite, veuillez réessayer.";
+        }
+        // this.errorMessage = error.error.message;
         this.loading = false;
       },
     });

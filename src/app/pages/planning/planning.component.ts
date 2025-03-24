@@ -151,15 +151,15 @@ export class PlanningComponent {
     const voiture = this.vehiculeCreneauChoisi._id; 
     
     const creneau = this.planningService.convertStringToIntervalle(heure_rdv);
-    // this.rendezvousServices.saveRendezVous(date_rdv,creneau,service,voiture).subscribe({
-    //   next: (response) =>{
-    //     alert("Votre rendez vous a été enregistré");
-    //     this.router.navigate(['/planning']);
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   }
-    // })
+    this.rendezvousServices.saveRendezVous(date_rdv,creneau,service,voiture).subscribe({
+      next: (response) =>{
+        alert("Votre rendez vous a été enregistré");
+        this.router.navigate(['/planning']);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   handleRetour() : void {

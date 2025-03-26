@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import { UtilisateurService } from './utilisateur.service';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,22 @@ export class AuthService {
   isLoggedIn(): boolean {
     const id = localStorage.getItem('userId');
     return !!id;
+  }
+
+
+  isTokenValid(): boolean {
+    const token = localStorage.getItem('authToken'); // Récupérer dynamiquement
+    if (!token) return false;
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      // console.log('Decoded token:', decoded);
+      // console.log('Expiration (exp):', decoded.exp, 'Current time:', currentTime);
+      return decoded.exp > currentTime;
+    } catch (error) {
+      console.error('Erreur lors du décodage du token:', error);
+      return false;
+    }
   }
 
   mustChangePwd() : boolean{
@@ -98,3 +115,4 @@ export class AuthService {
     return this.http.put(`${this.apiUrl}/change-pwd`,{ oldPwd, newPwd },{ headers });
   }
 }
+

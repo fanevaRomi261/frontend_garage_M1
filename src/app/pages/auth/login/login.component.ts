@@ -31,7 +31,7 @@ export class LoginComponent {
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('mustChangePassword',response.mustChangePassword.toString());
         await this.authService.setUserInfo();
-        console.log(localStorage.getItem("userData"));
+        // console.log(localStorage.getItem("userData"));
         this.loading = false;
         if (response.mustChangePassword) {
           alert(response.message);

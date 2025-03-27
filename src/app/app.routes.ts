@@ -35,19 +35,19 @@ export const routes: Routes = [
          path : 'planning' , 
          component: PlanningComponent , 
          canActivate : [authGuard], 
-         data : { profiles : ['client','manager','mécanicien'] },
+         data : { profiles : ['client'] },
       },
       {
         path: 'vehicule-client',
         component: VehiculeClientComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'manager', 'admin'] },
+        data: { profiles: ['client'] },
       },
       {
         path: 'historique-reparation-client/:vehicule_id',
         component: HistoriqueReparationClientComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'manager', 'admin'] },
+        data: { profiles: ['client', 'manager', 'mécanicien'] },
       },
       {
         path: 'entree-stock',
@@ -59,13 +59,13 @@ export const routes: Routes = [
         path: 'etat-stock',
         component: EtatStockComponent,
         canActivate: [authGuard],
-        data: { profiles: ['manager'] },
+        data: { profiles: ['manager','mécanicien'] },
       },
       {
         path: 'detail-reparation/:reparation_id',
         component: DetailReparationComponent,
         canActivate: [authGuard],
-        data: { profiles: ['mecanicien', 'manager'] },
+        data: { profiles: ['mécanicien', 'manager'] },
       },
       {
         path: 'gestion-mecanicien',

@@ -16,6 +16,7 @@ import { authGuard } from './guards/auth.guard';
 import { GestionMecanicienComponent } from './pages/gestion-mecanicien/gestion-mecanicien.component';
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
 import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
+import { AgendaMecanicienComponent } from './pages/agenda-mecanicien/agenda-mecanicien.component';
 
 
 export const routes: Routes = [
@@ -72,7 +73,14 @@ export const routes: Routes = [
         canActivate: [authGuard],
         data: { profiles: ['manager'] },
       },
+      {
+        path: 'agenda-mecanicien',
+        component: AgendaMecanicienComponent,
+        canActivate: [authGuard],
+        data: {profiles : ['mécanicien']}
+      },
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
+
 
     ],
   },

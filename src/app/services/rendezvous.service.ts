@@ -7,8 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RendezvousService {
-  private apiUrl = `${environment.apiUrl}/rendezvous`
-  
+  private apiUrl = `${environment.apiUrl}/rendezvous`;
+  private mecanicien = `${environment.apiUrl}/mecanicien`;
+   
   constructor(private http : HttpClient) { }
 
   saveRendezVous( date_rdv : string , creneauChoisi : number[] , service_id: string , id_voiture: string) : Observable<any>{
@@ -30,6 +31,9 @@ export class RendezvousService {
     return this.http.post(`${this.apiUrl}/save`,body);
   }
 
+  getRendezVousMecanicienSemaine(){
+
+  }  
 
 
 }

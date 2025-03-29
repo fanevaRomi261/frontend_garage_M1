@@ -5,5 +5,107 @@
                 
             </full-calendar>
         </div>
+
+        <div class="card mt-2 py-3 col-sm-4" [class.d-none] = "!showInfoRendezvous">
+            <div class="align-item-center">
+
+                <h4>🧰 Rendez Vous</h4>
+
+                <div class="form-modal">
+                    <label for="service">Date : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-check2-circle"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="service" value="{{infoRendezVous?.date_rdv | date:'MMM d, y'}} | {{infoRendezVous?.heure_rdv.hours}} h {{infoRendezVous?.heure_rdv.minutes !== 0 ? infoRendezVous?.heure_rdv.minutes : ''}} " 
+                        readonly >
+                    </div>
+                </div>
+
+                <div class="form-modal">
+                    <label for="service">Service : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-check2-circle"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="service" value="{{infoRendezVous?.service_id.libelle}}" readonly >
+                    </div>
+                </div>
+
+                <div class="form-modal">
+                    <label for="client">Client : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-people"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="client" value="{{infoRendezVous?.client_id.nom}} {{infoRendezVous?.client_id.prenom}}" readonly >
+                    </div>
+                </div>
+
+                <div class="form-modal">
+                    <label for="contact">Contact client : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-people"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="contact" value="{{infoRendezVous?.client_id.contact}}" readonly >
+                    </div>
+                </div>
+
+                <div class="form-modal">
+                    <label for="voiture">Voiture : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-car-front-fill"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="voiture" value=" {{infoRendezVous?.id_voiture.marque }} {{ infoRendezVous?.id_voiture.modele}}" readonly >
+                    </div>
+                </div>
+
+                <div class="form-modal">
+                    <label for="immatriculation">Immatriculation : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-car-front-fill"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="immatriculation" value="{{ infoRendezVous?.id_voiture.immatriculation || ''}}" readonly >
+                    </div>
+                </div>
+
+                <!-- <div class="form-modal">
+                    <label for="mecanicien">Mécanicien : </label>
+                    
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"> 
+                          <i class="bi bi-people"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-input" id="mecanicien" value="{{ infoRendezVous?.mecanicien_id.nom || '' }} {{ infoRendezVous?.mecanicien_id.prenom || ''}}" readonly >
+                    </div>
+                </div> -->
+            </div>
+            <div class="row-btn d-flex h-100 align-items-end ">
+                <div class="btn btn-success" (click)="commencerRendezVous()" > Commencer réparation</div>
+            </div>
+        </div>
     </div>
 </div>

@@ -19,6 +19,12 @@
           <br>
         </a>
       </li>
+      <li *ngIf="hasAccessToMenu(['manager'])">
+        <a routerLink="/dashboard-manager" class="nav-link link-body-emphasis">
+          <p class="bi bi-graph-up" style="position:fixed;"> Tableau de bord</p>
+          <br>
+        </a>
+      </li>
       <li *ngIf="hasAccessToMenu(['client'])">
         <a routerLink="/vehicule-client" class="nav-link link-body-emphasis">
           <p class="bi bi-car-front-fill" style="position:fixed;"> Mes véhicules</p>
@@ -250,6 +256,12 @@
           <a routerLink="/accueil" class="nav-link link-body-emphasis" aria-current="page">
             <p class="bi bi-house-door" style="position: fixed">Accueil</p>
             <br />
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['manager'])">
+          <a routerLink="/dashboard-manager" class="nav-link link-body-emphasis">
+            <p class="bi bi-graph-up" style="position:fixed;"> Tableau de bord</p>
+            <br>
           </a>
         </li>
         <li *ngIf="hasAccessToMenu(['client'])">

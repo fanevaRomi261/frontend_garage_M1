@@ -1,0 +1,194 @@
+<div class="container">
+  <h2 class="mt-4">Tableau de bord</h2>
+
+  <!-- nombre Utilisateurs -->
+  <div class="row g-4">
+    <div class="col-xl-3 col-md-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <i
+                class="bi bi-people-fill text-primary"
+                style="font-size: 2rem"
+              ></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Total Utilisateurs</h6>
+              <h3 class="mb-0 text-primary">{{ userCount?.totalUsers }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Managers -->
+    <div class="col-xl-3 col-md-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <i
+                class="bi bi-person-gear text-success"
+                style="font-size: 2rem"
+              ></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Managers</h6>
+              <h3 class="mb-0 text-success">{{ userCount?.managerCount }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Mécaniciens -->
+    <div class="col-xl-3 col-md-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <i class="bi bi-tools text-warning" style="font-size: 2rem"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Mécaniciens</h6>
+              <h3 class="mb-0 text-warning">{{ userCount?.mecanicienCount }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Clients -->
+    <div class="col-xl-3 col-md-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <i
+                class="bi bi-person-heart text-info"
+                style="font-size: 2rem"
+              ></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Clients</h6>
+              <h3 class="mb-0 text-info">{{ userCount?.clientCount }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- graphe reparation -->  
+  <div class="row g-4 mt-5">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">Réparations par mois</h5>
+            <div class="form-group">
+              <select [(ngModel)]="selectedYearReparationCount" (change)="onYearChangeReparationChart()" class="form-select" style="width: 100px;">
+                <option *ngFor="let year of availableYears" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+          <canvas id="reparationChart" style="max-height: 400px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Top 5 Pièces les plus Vendues -->
+  <div class="row g-4 mt-5">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">Top 5 pièces les plus vendues</h5>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let piece of topSellingPieces" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ piece.piece.libelle }}</span>
+              <span class="badge bg-primary rounded-pill">{{ piece.totalQuantity }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top 5 client avec le plus de reparation -->
+  <div class="row g-4 mt-5">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">Top 5 clients avec le plus de réparation</h5>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let clt of topClient" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ clt.nom }} {{ clt.prenom }}</span>
+              <span class="badge bg-primary rounded-pill">{{ clt.totalReparations }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Temps moyen de réparation -->
+  <div class="row g-4 mt-5">
+    <div class="col-xl-3 col-md-6">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+              <i class="bi bi-clock text-info" style="font-size: 2rem"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="text-muted mb-1">Temps moyen de réparation</h6>
+              <h3 class="mb-0 text-info">
+                {{ tempsMoyenReparation?.tempsMoyen?.averageDurationHours | number: '1.0-2' }} heures
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dépense moyenne par réparation -->
+    <div class="row g-4 mt-5">
+        <div class="col-xl-3 col-md-6">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <i class="bi bi-cash text-success" style="font-size: 2rem"></i>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="text-muted mb-1">Dépense moyenne par réparation</h6>
+                  <h3 class="mb-0 text-success">
+                    {{ depenseMoyenneReparation?.depenseMoyenne | number }} MGA
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- graphe chiffre d'affaire -->  
+  <div class="row g-4 mt-5">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">Chiffre d'affaire par mois</h5>
+            <div class="form-group">
+              <select [(ngModel)]="selectedYearChiffre" (change)="onYearChangeChiffreChart()" class="form-select" style="width: 100px;">
+                <option *ngFor="let year of availableYears" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+          <canvas id="chiffreChart" style="max-height: 400px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

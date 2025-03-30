@@ -17,6 +17,7 @@ import { GestionMecanicienComponent } from './pages/gestion-mecanicien/gestion-m
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
 import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
 import { GestionPieceComponent } from './pages/gestion-piece/gestion-piece.component';
+import { DashboardManagerComponent } from './pages/dashboard-manager/dashboard-manager.component';
 
 
 export const routes: Routes = [
@@ -76,6 +77,12 @@ export const routes: Routes = [
       {
         path: 'gestion-piece',
         component: GestionPieceComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['manager'] },
+      },
+      {
+        path: 'dashboard-manager',
+        component: DashboardManagerComponent,
         canActivate: [authGuard],
         data: { profiles: ['manager'] },
       },

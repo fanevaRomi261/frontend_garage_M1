@@ -1,13 +1,42 @@
-<div class="px-3 py-3 d-flex justify-content-end gap-2">
-  <button class="btn btn-danger" (click)="showFormulaireCompteRendu()">
-    <i class="bi bi-stopwatch mr-2"></i>
-    Réparation terminée
-  </button>
+<div class="row-top" style="display: flex;justify-content: space-between;align-items: center">
+  
+  <div class="left px-3">
+    <h6></h6>
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+      <i class="bi bi-info-circle"></i>
+      <div class="mx-2">
+        {{ infoRendezVous?.etat | etatLibelle }}      
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="px-3 py-3 d-flex justify-content-end gap-2" *ngIf="infoRendezVous?.etat === 15 && userRole === 'mécanicien' ">
+    <button class="btn btn-danger" (click)="showFormulaireCompteRendu()">
+      <i class="bi bi-stopwatch mr-2"></i>
+      Réparation terminée
+    </button>
 
-  <button class="btn btn-success">
-    <i class="bi bi-plus-lg mr-2"></i>
-    Ajouter une prestation
-  </button>
+    <button class="btn btn-success">
+      <i class="bi bi-plus-lg mr-2"></i>
+      Ajouter une prestation
+    </button>
+  </div>
+
+  <div class="row-btn px-3 py-3" *ngIf="(infoRendezVous?.etat < 25 && infoRendezVous?.etat >= 20) && userRole === 'manager' ">
+      <button class="btn btn-lg btn-warning" style="font-size: 1em;font-weight: 500;" (click)="paiementReparation()">
+        <i class="bi bi-wallet2 mr-4" style="margin-right: 10px;"></i>
+        Valider paiement
+      </button>
+  </div>
+
+  <div class="px-3" *ngIf="userRole === 'manager' || userRole === 'mécanicien' ">
+    <button class="btn btn-lg btn-secondary" [routerLink]="'/agenda-mecanicien'">
+      Retour
+      <i class="bi bi-arrow-bar-right" style="margin-left: 5px;"></i>
+    </button>
+  </div>
+  
 </div>
 
 <div class="container">
@@ -30,19 +59,6 @@
           <td>4</td>
           <td>30.000 Ar</td>
           <td style="font-weight: 900">120.000 Ar</td>
-          <!-- <td>
-            <button
-              class="btn btn-warning btn-sm me-1"
-              title="Modifier"
-              data-bs-toggle="modal"
-              data-bs-target="#modalModification"
-            >
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-success btn-sm me-1" title="Detail">
-              <i class="bi bi-clock-history"></i>
-            </button>
-          </td> -->
         </tr>
       </tbody>
     </table>
@@ -50,7 +66,7 @@
 
   <!-- modal pour confirmer fermeture reparation -->
   <div class="row mt-2 px-1 py-2 d-flex justify-content-center" [class.d-none] = "!isCompteRenduShowed">
-    <div class="card py-3 col-sm-6 d-flex flex-column">
+    <form class="card py-3 col-sm-6 d-flex flex-column" [formGroup] = "formulaireCompteRendu" >
       <!-- <label for="">Observation : </label> -->
       <h4 style="font-weight: 900">Compte Rendu</h4>
 
@@ -58,7 +74,7 @@
           <label for="contact">Observation : </label>
 
           <div class="input-group mb-1">
-            <textarea class="form-control"  name="" id=""></textarea>
+            <textarea class="form-control" formControlName="compte_rendu" id=""></textarea>
           </div>
         </div>
       
@@ -71,19 +87,60 @@
                 <i class="bi bi-cash"></i>
               </span>
             </div>
-            <input type="text" class="form-input h-100" id="contact">
+            <input type="number" formControlName="prix_main_doeuvre" class="form-input h-100" id="contact">
           </div>
         </div>
 
       <div class="d-flex justify-content-end mb-2">
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" type="button" (click)="submitCompteRendu()">
           <i class="bi bi-floppy" style="margin-right: 10px;"></i>
           Valider compte rendu
         </button>
       </div>
 
-    </div>
+    </form>
   </div>
   <!--formulaire pour confirmer fermeture reparation -->
 
+  <!-- information service -->
+  <div class="information-crrow mt-2 px-1 py-2 d-flex justify-content-center" *ngIf="infoRendezVous?.etat >= 20">
+    <div class="card py-3 px-3 col-sm-6 d-flex flex-column">
+
+      <div class="form-modal">
+        <label for="mecanicien">Mécanicien en charge : </label>
+        
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"> 
+              <i class="bi bi-people"></i>
+            </span>
+          </div>
+          <input type="text" class="form-input" id="mecanicien" value="{{ infoRendezVous?.mecanicien_id.nom || '' }} {{ infoRendezVous?.mecanicien_id.prenom || ''}}" readonly >
+        </div>
+      </div>
+
+      <div class="form-modal">
+        <label for="mecanicien">Observation : </label>        
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <textarea class="form-control" name="" id="" [value]="infoReparation?.observation" style="width: 100%;" readonly></textarea>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="form-modal">
+        <label for="mecanicien">Prix Main d'Oeuvre : </label>
+        
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"> 
+              <i class="bi bi-wallet2"></i>
+            </span>
+          </div>
+          <input type="text" class="form-input" id="mecanicien" value="{{infoReparation?.prix_main_doeuvre}} Ar" readonly >
+        </div>
+      </div>
+
+    </div>
 </div>

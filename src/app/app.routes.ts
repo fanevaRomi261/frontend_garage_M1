@@ -77,7 +77,7 @@ export const routes: Routes = [
         path: 'agenda-mecanicien',
         component: AgendaMecanicienComponent,
         canActivate: [authGuard],
-        data: {profiles : ['mécanicien']}
+        data: {profiles : ['mécanicien','manager']}
       },
       {
         path : 'reparation/:id',

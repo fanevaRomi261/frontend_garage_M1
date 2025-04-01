@@ -25,6 +25,8 @@ export class ReparationComponent {
 
   userRole!: string;
 
+  isListeLoading: boolean = false;
+
   constructor(private reparationService: ReparationService,private route: ActivatedRoute,private rendezVousService : RendezvousService,private router: Router) {
     this.formulaireCompteRendu = new FormGroup({
       compte_rendu: new FormControl(''),
@@ -52,9 +54,11 @@ export class ReparationComponent {
   }
 
   loadInformationReparation(idReparation: string): void {
+    this.isListeLoading = true;
     this.reparationService.getReparationById(idReparation).subscribe({
       next: (reparation) => {
         this.infoReparation = reparation;
+        this.isListeLoading = false;
         console.log("Réparation récupérée :", this.infoReparation); 
         if (reparation.rendez_vous_id) {
           this.rendezVousService.getRendezVousById(reparation.rendez_vous_id).subscribe({
@@ -69,6 +73,7 @@ export class ReparationComponent {
         }
       },
       error: (error) => {
+        this.isListeLoading = false;
         console.error("Erreur lors de la récupération de la réparation :", error);
       }
     });

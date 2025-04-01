@@ -87,7 +87,7 @@ export const routes: Routes = [
         path : 'reparation/:id',
         component : ReparationComponent,
         canActivate : [authGuard],
-        data : { profiles : ['mécanicien','manager']}
+        data : { profiles : ['mécanicien','manager','client']}
       },
       {
         path: 'gestion-piece',

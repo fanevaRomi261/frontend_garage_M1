@@ -160,7 +160,7 @@ export class PlanningComponent {
     this.rendezvousServices.saveRendezVous(dateUtc.toString(),creneau,service,voiture).subscribe({
       next: (response) =>{
         alert("Votre rendez vous a été enregistré");
-        this.router.navigate(['/planning']);
+        this.router.navigate(['/liste-rdv-client']);
       },
       error: (error) => {
         console.log(error);

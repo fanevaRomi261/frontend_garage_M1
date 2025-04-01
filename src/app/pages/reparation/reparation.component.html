@@ -17,7 +17,7 @@
       Réparation terminée
     </button>
 
-    <button class="btn btn-success">
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalInsertion">
       <i class="bi bi-plus-lg mr-2"></i>
       Ajouter une prestation
     </button>
@@ -98,7 +98,7 @@
                 <i class="bi bi-cash"></i>
               </span>
             </div>
-            <input type="number" formControlName="prix_main_doeuvre" class="form-input h-100" id="contact">
+            <input type="number" formControlName="prix_main_doeuvre" class="form-input h-100" id="contact" min="" required>
           </div>
         </div>
 
@@ -154,4 +154,113 @@
       </div>
 
     </div>
+</div>
+
+<!-- Modal insertion-->
+<div
+  class="modal fade"
+  id="modalInsertion"
+  tabindex="-1"
+  aria-labelledby="modalLabelInserion"
+  aria-hidden="true"
+  (hidden.bs.modal)="onInsertionModalClose()"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelInserion">
+          Ajout détail réparation
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form
+        class="row g-3"
+        [formGroup]="formDetailReparation"
+        (ngSubmit)="insertionDetailReparation()"
+      >
+        <div *ngIf="errorMessage" class="modal-header text-danger">
+            {{ errorMessage }}
+        </div>
+        <div class="modal-body">
+          <div class="col-12">
+            <label for="piece" class="form-label">Pièce</label>
+            <select class="form-select" id="piece" formControlName="piece_id">
+              <option selected disabled>Choisissez</option>
+              <option *ngFor="let pc of listePiece" [value]="pc._id">
+                {{ pc.libelle }}
+              </option>
+            </select>
+            <div
+              class="text-danger"
+              *ngIf="
+                isInsertFormSubmitted &&
+                formDetailReparation.controls['piece_id'].invalid
+              "
+            >
+              <span
+                *ngIf="formDetailReparation.controls['piece_id'].errors?.['required']"
+                >Le piece est requis.</span
+              >
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <label for="qte" class="form-label">Quantité</label>
+            <input
+              type="text"
+              class="form-control"
+              id="quantite"
+              formControlName="quantite"
+            />
+          </div>
+          <div
+            class="text-danger"
+            *ngIf="
+              isInsertFormSubmitted &&
+              formDetailReparation.controls['quantite'].invalid
+            "
+          >
+            <p
+              *ngIf="formDetailReparation.controls['quantite'].errors?.['required']"
+            >
+              La quantite est requise.
+            </p>
+            <p
+              *ngIf="formDetailReparation.controls['quantite']?.errors?.['pattern']"
+            >
+              La quantité doit être un nombre
+            </p>
+            <p
+              *ngIf="formDetailReparation.controls['quantite']?.errors?.['min']"
+            >
+              La quantité doit être supérieure à 0
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="insertionModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span
+              *ngIf="isInsertFormLoading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span *ngIf="!isInsertFormLoading">Valider</span>
+            <span *ngIf="isInsertFormLoading">En attente</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

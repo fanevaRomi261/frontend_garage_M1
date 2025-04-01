@@ -53,11 +53,13 @@ export class EntreeStockComponent implements OnInit {
     this.stockService.insererEntreeStock(this.formEntree.value).subscribe({
       next: (response) => {
         this.isFormLoading = false;
+        this.isFormSubmitted = false;
         this.formEntree.reset();
         alert("Entrée inseré");
       },
       error: (error) => {
         this.isFormLoading = false;
+        // this.isFormSubmitted = false;
         console.log(error);
       },
     });

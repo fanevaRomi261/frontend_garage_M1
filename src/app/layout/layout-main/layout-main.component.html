@@ -19,33 +19,60 @@
           <br>
         </a>
       </li>
-      <li>
+      <li *ngIf="hasAccessToMenu(['manager'])">
+        <a routerLink="/dashboard-manager" class="nav-link link-body-emphasis">
+          <p class="bi bi-graph-up" style="position:fixed;"> Tableau de bord</p>
+          <br>
+        </a>
+      </li>
+      <li *ngIf="hasAccessToMenu(['client'])">
         <a routerLink="/vehicule-client" class="nav-link link-body-emphasis">
           <p class="bi bi-car-front-fill" style="position:fixed;"> Mes véhicules</p>
           <br>
         </a>
       </li>
-      <li>
+      <li *ngIf="hasAccessToMenu(['manager'])">
         <a routerLink="/entree-stock" class="nav-link link-body-emphasis">
           <p class="bi bi-plus-square" style="position:fixed;"> Entrée de stock de pièce</p>
           <br>
         </a>
       </li>
-      <li>
+      <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
         <a routerLink="/etat-stock" class="nav-link link-body-emphasis">
           <p class="bi bi-box-seam" style="position:fixed;"> Etat de stock de pièce</p>
           <br>
         </a>
       </li>
-      <li>
+      <li *ngIf="hasAccessToMenu(['manager'])">
         <a routerLink="/gestion-mecanicien" class="nav-link link-body-emphasis">
           <p class="bi bi-wrench" style="position:fixed;"> Gestion mécanicien</p>
           <br>
         </a>
       </li>
-      <li>
+
+      <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
         <a routerLink="/agenda-mecanicien" class="nav-link link-body-emphasis">
           <p class="bi bi-calendar" style="position:fixed;"> Agenda mécanicien</p>
+          <br>  
+        </a>
+      </li>
+      
+      <li *ngIf="hasAccessToMenu(['client'])">
+        <a routerLink="/planning" class="nav-link link-body-emphasis">
+          <p class="bi bi-calendar-check" style="position:fixed;"> Prendre rendez-vous</p>
+          <br>
+        </a>
+      </li>
+      <li *ngIf="hasAccessToMenu(['manager'])">
+        <a routerLink="/gestion-piece" class="nav-link link-body-emphasis">
+          <p class="bi bi-gear" style="position:fixed;"> Gestion pièce</p>
+          <br>
+        </a>
+      </li>
+      <li *ngIf="hasAccessToMenu(['client'])">
+        <a routerLink="/liste-rdv-client" class="nav-link link-body-emphasis">
+          <p class="bi bi-person-lines-fill" style="position:fixed;"> Mes rendez-vous</p>
+
           <br>
         </a>
       </li>
@@ -195,27 +222,23 @@
       <!-- fin contenu ici -->
 
       <!-- footer -->
-      <div class="row">
-        <!-- Footer -->
-        <!-- <footer class="bg-dark text-white py-4 mt-5">
+      <div class="row mt-5">
+        <footer class="bg-dark text-white py-4 text-center">
           <div class="container">
             <div class="row">
-              <div class="col-md-4">
-                <h5>Garage Norma</h5>
-                <p>Bakarta Reprezainty</p>
-              </div>
-              <div class="col-md-4">
-                <h5>Horaires</h5>
-                <p>Lun-Ven: 8h-18h<br />Sam: 9h-13h</p>
-              </div>
-              <div class="col-md-4">
-                <h5>Contact</h5>
-                <p>Tél: 01 23 45 67 89<br />Email: milay&#64;garageauto.fr</p>
+              <div class="col-md-12">
+                <h5>Réalisateurs</h5>
+                <p>
+                  ETU001866 - RANDRIANARISON Mitia Rindrafaneva Romi
+                  <br />
+                  ETU002219 - RAVELOSON Fitahiana Ismaël
+                </p>
               </div>
             </div>
           </div>
-        </footer> -->
+        </footer> 
       </div>
+
     </div>
     <!-- ### fin template ### !-->
   </main>
@@ -246,27 +269,57 @@
             <br />
           </a>
         </li>
-        <li>
+        <li *ngIf="hasAccessToMenu(['manager'])">
+          <a routerLink="/dashboard-manager" class="nav-link link-body-emphasis">
+            <p class="bi bi-graph-up" style="position:fixed;"> Tableau de bord</p>
+            <br>
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['client'])">
           <a routerLink="/vehicule-client" class="nav-link link-body-emphasis">
-            <p class="bi bi-car-front-fill" style="position: fixed">Mes véhicules</p>
-            <br />
+            <p class="bi bi-car-front-fill" style="position:fixed;"> Mes véhicules</p>
+            <br>
           </a>
         </li>
-        <li>
+        <li *ngIf="hasAccessToMenu(['manager'])">
           <a routerLink="/entree-stock" class="nav-link link-body-emphasis">
-            <p class="bi bi-plus-square" style="position: fixed">Entrée de stock de pièce</p>
-            <br />
+            <p class="bi bi-plus-square" style="position:fixed;"> Entrée de stock de pièce</p>
+            <br>
           </a>
         </li>
-        <li>
+        <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
           <a routerLink="/etat-stock" class="nav-link link-body-emphasis">
-            <p class="bi bi-box-seam" style="position: fixed">Etat de stock de pièce</p>
-            <br />
+            <p class="bi bi-box-seam" style="position:fixed;"> Etat de stock de pièce</p>
+            <br>
           </a>
         </li>
-        <li>
+        <li *ngIf="hasAccessToMenu(['manager'])">
           <a routerLink="/gestion-mecanicien" class="nav-link link-body-emphasis">
             <p class="bi bi-wrench" style="position:fixed;"> Gestion mécanicien</p>
+            <br>
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
+          <a routerLink="/agenda-mecanicien" class="nav-link link-body-emphasis">
+            <p class="bi bi-calendar" style="position:fixed;"> Agenda mécanicien</p>
+            <br>  
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['client'])">
+          <a routerLink="/planning" class="nav-link link-body-emphasis">
+            <p class="bi bi-calendar-check" style="position:fixed;"> Prendre rendez-vous</p>
+            <br>
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['manager'])">
+          <a routerLink="/gestion-piece" class="nav-link link-body-emphasis">
+            <p class="bi bi-gear" style="position:fixed;"> Gestion pièce</p>
+            <br>
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['client'])">
+          <a routerLink="/liste-rdv-client" class="nav-link link-body-emphasis">
+            <p class="bi bi-person-lines-fill" style="position:fixed;"> Mes rendez-vous</p>
             <br>
           </a>
         </li>

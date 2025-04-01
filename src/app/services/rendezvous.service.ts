@@ -87,14 +87,31 @@ export class RendezvousService {
   }
 
   getReparationForRendezVous(id_rendezvous: string) :  Observable<any>{
+     const token = localStorage.getItem('authToken');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+    return this.http.get<any>(`${this.apiUrl}/reparation/${id_rendezvous}`);
+  }
+
+  // rendez vous rehetra ny client iray
+  getRdvByIdClient(): Observable<any> {
     const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<any>(`${this.apiUrl}/reparation/${id_rendezvous}`);
+    const userId = localStorage.getItem('userId');
+    return this.http.get<any>(this.apiUrl+'/mes-rdv/'+userId,{headers});
   }
 
-  
+  // annuler rdv
+  annulerRdv(rdv_id : string): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put(this.apiUrl+'/annuler/'+rdv_id,{headers});
+  }
 
   convertRdvMecanicienToEvent(listeRdv: any[]) : any[] {
     const events: any[] = [];
@@ -135,8 +152,7 @@ export class RendezvousService {
         const heureRdv = rdv.heure_rdv;
         const startDate = new Date(dateRdv); 
         startDate.setHours(heureRdv.hours);
-        startDate.setMinutes(heureRdv.minutes);     
-
+        startDate.setMinutes(heureRdv.minutes);   
         const duree = rdv.service_id.duree;
         const endDate = new Date(startDate);
         endDate.setTime(startDate.getTime() + (duree.hours * 60 + duree.minutes) * 60 * 1000);
@@ -159,9 +175,4 @@ export class RendezvousService {
     return events;
   }
 
-
-  
-
 }
-
-

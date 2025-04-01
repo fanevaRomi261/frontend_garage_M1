@@ -163,7 +163,7 @@ export class GestionMecanicienComponent implements OnInit {
 
   // desactiver mecanicien
   desactiverMecanicien() {
-    console.log("eto");
+    // console.log("eto");
     if (this.userIdToDelete) {
       this.utilisateurService
         .desactiverUtilisateur(this.userIdToDelete)

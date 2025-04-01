@@ -73,11 +73,12 @@ export class RegisterComponent{
         this.router.navigate(['/login']);
       },
       error: (error) => {
+        // console.log(error);
         // console.log(error.error.errors);
         if (error.error?.errors && Array.isArray(error.error.errors)) {
           this.errorMessage = error.error.errors.map((err: any) => err.msg).join(' | ');
         } else {
-          this.errorMessage = "Une erreur s'est produite, veuillez réessayer.";
+          this.errorMessage = "Une erreur s'est produite :"+error.error.message;
         }
         // this.errorMessage = error.error.message;
         this.loading = false;

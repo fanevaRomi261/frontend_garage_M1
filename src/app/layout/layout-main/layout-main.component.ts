@@ -34,6 +34,11 @@ export class LayoutMainComponent implements OnInit {
     }
   }
 
+  hasAccessToMenu(allowedRoles: string[]): boolean {
+    return this.user && allowedRoles.includes(this.user.profil_id.libelle.toLowerCase());
+  }
+
+
   logout() {
     this.authService.logout(); // Appelle directement le service
   }

@@ -30,6 +30,25 @@ export class RendezvousService {
     return this.http.post(`${this.apiUrl}/save`,body);
   }
 
+  // rendez vous rehetra ny client iray
+  getRdvByIdClient(): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    const userId = localStorage.getItem('userId');
+    return this.http.get<any>(this.apiUrl+'/mes-rdv/'+userId,{headers});
+  }
+
+  // annuler rdv
+  annulerRdv(rdv_id : string): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put(this.apiUrl+'/annuler/'+rdv_id,{headers});
+  }
+
 
 
 }

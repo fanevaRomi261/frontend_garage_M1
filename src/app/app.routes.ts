@@ -16,6 +16,9 @@ import { authGuard } from './guards/auth.guard';
 import { GestionMecanicienComponent } from './pages/gestion-mecanicien/gestion-mecanicien.component';
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
 import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
+import { GestionPieceComponent } from './pages/gestion-piece/gestion-piece.component';
+import { DashboardManagerComponent } from './pages/dashboard-manager/dashboard-manager.component';
+import { ListeRdvClientComponent } from './liste-rdv-client/liste-rdv-client.component';
 
 
 export const routes: Routes = [
@@ -34,19 +37,19 @@ export const routes: Routes = [
          path : 'planning' , 
          component: PlanningComponent , 
          canActivate : [authGuard], 
-         data : { profiles : ['client','manager','mécanicien'] },
+         data : { profiles : ['client'] },
       },
       {
         path: 'vehicule-client',
         component: VehiculeClientComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'manager', 'admin'] },
+        data: { profiles: ['client'] },
       },
       {
         path: 'historique-reparation-client/:vehicule_id',
         component: HistoriqueReparationClientComponent,
         canActivate: [authGuard],
-        data: { profiles: ['client', 'manager', 'admin'] },
+        data: { profiles: ['client', 'manager', 'mécanicien'] },
       },
       {
         path: 'entree-stock',
@@ -58,19 +61,37 @@ export const routes: Routes = [
         path: 'etat-stock',
         component: EtatStockComponent,
         canActivate: [authGuard],
-        data: { profiles: ['manager'] },
+        data: { profiles: ['manager','mécanicien'] },
       },
       {
         path: 'detail-reparation/:reparation_id',
         component: DetailReparationComponent,
         canActivate: [authGuard],
-        data: { profiles: ['mecanicien', 'manager'] },
+        data: { profiles: ['mécanicien', 'manager'] },
       },
       {
         path: 'gestion-mecanicien',
         component: GestionMecanicienComponent,
         canActivate: [authGuard],
         data: { profiles: ['manager'] },
+      },
+      {
+        path: 'gestion-piece',
+        component: GestionPieceComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['manager'] },
+      },
+      {
+        path: 'dashboard-manager',
+        component: DashboardManagerComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['manager'] },
+      },
+      {
+        path: 'liste-rdv-client',
+        component: ListeRdvClientComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client'] },
       },
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
 

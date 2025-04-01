@@ -17,7 +17,7 @@ export class EtatLibellePipe implements PipeTransform {
       case 25:
         return 'Réparation payée';
       case 0:
-        return 'Rendez vous annulé';  
+        return 'Annulé';  
       default:
         return 'État inconnu';
     }

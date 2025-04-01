@@ -21,7 +21,8 @@ export const authGuard: CanActivateFn = (route, state) => {
   const allowedProfiles = route.data['profiles'] as string[] | undefined;
   const userProfile = authService.getUserProfile();
 
-  // console.log(allowedProfiles,userProfile);
+  console.log(allowedProfiles,userProfile);
+
   if (allowedProfiles && !allowedProfiles.some(profile => profile.toLowerCase() === (userProfile as string).toLowerCase())) {
     router.navigate(['/forbidden']);
     return false;

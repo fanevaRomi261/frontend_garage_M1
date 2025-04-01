@@ -30,7 +30,7 @@
           <td>{{ rdv.mecanicien_id.nom }} {{ rdv.mecanicien_id.prenom }}</td>
           <td>{{ rdv.service_id.libelle }}</td>
           <td>{{ rdv.id_voiture.immatriculation }} - {{ rdv.id_voiture.marque }} - {{ rdv.id_voiture.modele }}</td>
-          <td>{{ rdv.etat }}</td>
+          <td>{{ rdv.etat | etatLibelle }}</td>
           <td>{{ rdv.createdAt | date : "dd/MM/yyyy HH:mm" }}</td>
           <td>
             <button
@@ -38,15 +38,16 @@
               title="Annuler"
               data-bs-toggle="modal"
               data-bs-target="#modalConfirmationAnnulation"
-              [disabled]="rdv.etat != 5"
+              [disabled]="rdv.etat !== 5"
               (click)="setIdRdvToCancel(rdv._id)"
             >
               <i class="bi bi-x"></i>
             </button>
             <button
-              class="btn btn-secondary btn-sm me-1"
+              class="btn btn-primary btn-sm me-1"
               title="Détail réparation"
-              [disabled]="rdv.etat != 5"
+              [disabled]="rdv.etat <= 5"
+              (click)="consulterReparation(rdv._id)"
             >
               <i class="bi bi-eye"></i>
             </button>

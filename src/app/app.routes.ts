@@ -16,6 +16,8 @@ import { authGuard } from './guards/auth.guard';
 import { GestionMecanicienComponent } from './pages/gestion-mecanicien/gestion-mecanicien.component';
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
 import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
+import { AgendaMecanicienComponent } from './pages/agenda-mecanicien/agenda-mecanicien.component';
+import { ReparationComponent } from './pages/reparation/reparation.component';
 import { GestionPieceComponent } from './pages/gestion-piece/gestion-piece.component';
 import { DashboardManagerComponent } from './pages/dashboard-manager/dashboard-manager.component';
 import { ListeRdvClientComponent } from './liste-rdv-client/liste-rdv-client.component';
@@ -76,6 +78,18 @@ export const routes: Routes = [
         data: { profiles: ['manager'] },
       },
       {
+        path: 'agenda-mecanicien',
+        component: AgendaMecanicienComponent,
+        canActivate: [authGuard],
+        data: {profiles : ['mécanicien','manager']}
+      },
+      {
+        path : 'reparation/:id',
+        component : ReparationComponent,
+        canActivate : [authGuard],
+        data : { profiles : ['mécanicien','manager','client']}
+      },
+      {
         path: 'gestion-piece',
         component: GestionPieceComponent,
         canActivate: [authGuard],
@@ -95,6 +109,7 @@ export const routes: Routes = [
       },
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
 
+      
     ],
   },
   { path: 'forbidden', component: ForbiddenComponent }, // Page 403

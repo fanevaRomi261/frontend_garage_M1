@@ -94,11 +94,14 @@ export class AuthService {
     });
   }
 
-  // Déconnexion
-  logout(): void {
+  clearCache() : void {
     localStorage.removeItem('userId');
     localStorage.removeItem('userData');
     localStorage.removeItem('authToken');
+  }
+  // Déconnexion
+  logout(): void {
+    this.clearCache();
     this.router.navigate(['/login']);
   }
 

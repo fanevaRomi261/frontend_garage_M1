@@ -18,6 +18,7 @@ import { ChangePasswordComponent } from './pages/auth/change-password/change-pas
 import { HistoriqueReparationClientComponent } from './pages/historique-reparation-client/historique-reparation-client.component';
 import { GestionPieceComponent } from './pages/gestion-piece/gestion-piece.component';
 import { DashboardManagerComponent } from './pages/dashboard-manager/dashboard-manager.component';
+import { ListeRdvClientComponent } from './liste-rdv-client/liste-rdv-client.component';
 
 
 export const routes: Routes = [
@@ -85,6 +86,12 @@ export const routes: Routes = [
         component: DashboardManagerComponent,
         canActivate: [authGuard],
         data: { profiles: ['manager'] },
+      },
+      {
+        path: 'liste-rdv-client',
+        component: ListeRdvClientComponent,
+        canActivate: [authGuard],
+        data: { profiles: ['client'] },
       },
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
 

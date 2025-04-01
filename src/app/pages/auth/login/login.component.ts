@@ -26,7 +26,8 @@ export class LoginComponent {
 
     this.authService.login(this.loginModel).subscribe({
       next: async (response) => {
-        console.log(response);
+        // console.log(response);
+        this.authService.clearCache();
         localStorage.setItem('authToken', response.token); // Stocker le token si renvoyé
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('mustChangePassword',response.mustChangePassword.toString());

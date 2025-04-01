@@ -61,6 +61,12 @@
           <br>
         </a>
       </li>
+      <li *ngIf="hasAccessToMenu(['client'])">
+        <a routerLink="/liste-rdv-client" class="nav-link link-body-emphasis">
+          <p class="bi bi-person-lines-fill" style="position:fixed;"> Mes rendez-vous</p>
+          <br>
+        </a>
+      </li>
     </ul>
 
     <hr />
@@ -207,27 +213,23 @@
       <!-- fin contenu ici -->
 
       <!-- footer -->
-      <div class="row">
-        <!-- Footer -->
-        <footer class="bg-dark text-white py-4 mt-5">
+      <div class="row mt-5">
+        <footer class="bg-dark text-white py-4 text-center">
           <div class="container">
             <div class="row">
-              <div class="col-md-4">
-                <h5>Garage Norma</h5>
-                <p>Bakarta Reprezainty</p>
-              </div>
-              <div class="col-md-4">
-                <h5>Horaires</h5>
-                <p>Lun-Ven: 8h-18h<br />Sam: 9h-13h</p>
-              </div>
-              <div class="col-md-4">
-                <h5>Contact</h5>
-                <p>Tél: 01 23 45 67 89<br />Email: milay&#64;garageauto.fr</p>
+              <div class="col-md-12">
+                <h5>Réalisateurs</h5>
+                <p>
+                  ETU001866 - RANDRIANARISON Mitia Rindrafaneva Romi
+                  <br />
+                  ETU002219 - RAVELOSON Fitahiana Ismaël
+                </p>
               </div>
             </div>
           </div>
         </footer>
       </div>
+
     </div>
     <!-- ### fin template ### !-->
   </main>
@@ -297,6 +299,12 @@
         <li *ngIf="hasAccessToMenu(['manager'])">
           <a routerLink="/gestion-piece" class="nav-link link-body-emphasis">
             <p class="bi bi-gear" style="position:fixed;"> Gestion pièce</p>
+            <br>
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['client'])">
+          <a routerLink="/liste-rdv-client" class="nav-link link-body-emphasis">
+            <p class="bi bi-person-lines-fill" style="position:fixed;"> Mes rendez-vous</p>
             <br>
           </a>
         </li>

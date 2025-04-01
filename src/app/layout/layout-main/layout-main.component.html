@@ -37,7 +37,7 @@
           <br>
         </a>
       </li>
-      <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
+      <li *ngIf="hasAccessToMenu(['manager'])">
         <a routerLink="/etat-stock" class="nav-link link-body-emphasis">
           <p class="bi bi-box-seam" style="position:fixed;"> Etat de stock de pièce</p>
           <br>
@@ -287,7 +287,7 @@
             <br>
           </a>
         </li>
-        <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
+        <li *ngIf="hasAccessToMenu(['manager'])">
           <a routerLink="/etat-stock" class="nav-link link-body-emphasis">
             <p class="bi bi-box-seam" style="position:fixed;"> Etat de stock de pièce</p>
             <br>

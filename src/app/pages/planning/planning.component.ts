@@ -117,7 +117,9 @@ export class PlanningComponent {
     if(this.dateRendezVous?.toDateString() != null){
       date = this.dateRendezVous.toDateString();
     }
-    
+
+    const dateUtc = this.rendezvousServices.convertIsoStringDateWithoutUTC(date);
+
     this.vehiculeService.getVehiculeByIdVehiculeByIsma(formValue.vehiculeCreneau).subscribe({
       next: (data) =>{
         this.vehiculeCreneauChoisi = data;
@@ -137,7 +139,7 @@ export class PlanningComponent {
     console.log("service choisi : " + service);
     console.log();
   
-    this.fetchCreneauLibre(date,service);
+    this.fetchCreneauLibre(dateUtc,service);
     this.canChangeDate = false;
     this.choixUtilisateur = true;
   }
@@ -145,13 +147,17 @@ export class PlanningComponent {
 
 
   submitRendezVous(formValue : any) : void{
-    const date_rdv = this.dateRendezVous?.toDateString() || new Date().toDateString();
+    const date_rdv = this.dateRendezVous?.toISOString() || new Date().toISOString();
+
+    // Convertir date_rdv en YYYY-MM-DDT00:00:00.000Z
+    const dateUtc = this.rendezvousServices.convertIsoStringDateWithoutUTC(date_rdv);
+
     const heure_rdv = formValue.heure_rdv;
     const service = this.serviceCreneauChoisi._id;
     const voiture = this.vehiculeCreneauChoisi._id; 
     
     const creneau = this.planningService.convertStringToIntervalle(heure_rdv);
-    this.rendezvousServices.saveRendezVous(date_rdv,creneau,service,voiture).subscribe({
+    this.rendezvousServices.saveRendezVous(dateUtc.toString(),creneau,service,voiture).subscribe({
       next: (response) =>{
         alert("Votre rendez vous a été enregistré");
         this.router.navigate(['/planning']);

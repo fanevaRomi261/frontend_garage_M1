@@ -49,6 +49,14 @@
           <br>
         </a>
       </li>
+
+      <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
+        <a routerLink="/agenda-mecanicien" class="nav-link link-body-emphasis">
+          <p class="bi bi-calendar" style="position:fixed;"> Agenda mécanicien</p>
+          <br>  
+        </a>
+      </li>
+      
       <li *ngIf="hasAccessToMenu(['client'])">
         <a routerLink="/planning" class="nav-link link-body-emphasis">
           <p class="bi bi-calendar-check" style="position:fixed;"> Prendre rendez-vous</p>
@@ -64,6 +72,7 @@
       <li *ngIf="hasAccessToMenu(['client'])">
         <a routerLink="/liste-rdv-client" class="nav-link link-body-emphasis">
           <p class="bi bi-person-lines-fill" style="position:fixed;"> Mes rendez-vous</p>
+
           <br>
         </a>
       </li>
@@ -227,7 +236,7 @@
               </div>
             </div>
           </div>
-        </footer>
+        </footer> 
       </div>
 
     </div>
@@ -288,6 +297,12 @@
           <a routerLink="/gestion-mecanicien" class="nav-link link-body-emphasis">
             <p class="bi bi-wrench" style="position:fixed;"> Gestion mécanicien</p>
             <br>
+          </a>
+        </li>
+        <li *ngIf="hasAccessToMenu(['manager','mécanicien'])">
+          <a routerLink="/agenda-mecanicien" class="nav-link link-body-emphasis">
+            <p class="bi bi-calendar" style="position:fixed;"> Agenda mécanicien</p>
+            <br>  
           </a>
         </li>
         <li *ngIf="hasAccessToMenu(['client'])">

@@ -76,6 +76,7 @@ export class DetailReparationComponent implements OnInit {
     this.stockService.insererDetailReparation(detailRaparationData).subscribe({
       next: (response) => {
         this.isInsertFormLoading = false;
+        this.errorMessage = null;
         this.closeInsertionModal();
         this.formDetailReparation.reset();
         alert('Detail inseré');

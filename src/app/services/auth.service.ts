@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import { UtilisateurService } from './utilisateur.service';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,22 @@ export class AuthService {
     return !!id;
   }
 
+
+  isTokenValid(): boolean {
+    const token = localStorage.getItem('authToken'); // Récupérer dynamiquement
+    if (!token) return false;
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      // console.log('Decoded token:', decoded);
+      // console.log('Expiration (exp):', decoded.exp, 'Current time:', currentTime);
+      return decoded.exp > currentTime;
+    } catch (error) {
+      console.error('Erreur lors du décodage du token:', error);
+      return false;
+    }
+  }
+
   mustChangePwd() : boolean{
     return localStorage.getItem('mustChangePassword') === 'true'; 
   }
@@ -36,7 +53,7 @@ export class AuthService {
   }
 
   login(credentials: { mail: string; pwd: string }): Observable<any> {
-    console.log("url"+ this.apiUrl);
+    // console.log("url"+ this.apiUrl);
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
@@ -77,11 +94,14 @@ export class AuthService {
     });
   }
 
-  // Déconnexion
-  logout(): void {
+  clearCache() : void {
     localStorage.removeItem('userId');
     localStorage.removeItem('userData');
     localStorage.removeItem('authToken');
+  }
+  // Déconnexion
+  logout(): void {
+    this.clearCache();
     this.router.navigate(['/login']);
   }
 
@@ -98,3 +118,4 @@ export class AuthService {
     return this.http.put(`${this.apiUrl}/change-pwd`,{ oldPwd, newPwd },{ headers });
   }
 }
+

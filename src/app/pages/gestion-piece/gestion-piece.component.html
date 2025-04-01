@@ -1,0 +1,322 @@
+<div class="container">
+  <h2 class="mt-2">Liste des pièces</h2>
+
+  <button
+    class="btn btn-primary mt-3"
+    data-bs-toggle="modal"
+    data-bs-target="#modalInsertion"
+  >
+    Ajouter
+  </button>
+
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-3" *ngIf="isListeLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div
+    class="table-responsive"
+    *ngIf="!isListeLoading && piece.length > 0; else noPiece"
+  >
+    <table class="table table-striped table-bordered table-hover mt-2">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Libelle</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Type de véhicule</th>
+          <th scope="col">Créé le</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vh of piece">
+          <td>{{ vh.libelle }}</td>
+          <td>{{ vh.prix }}</td>
+          <td>
+            <ul class="m-0">
+              <li *ngFor="let type of vh.type_vehicule_id">
+                {{ type.libelle }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ vh.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-1"
+              title="Modifier"
+              data-bs-toggle="modal"
+              data-bs-target="#modalModification"
+              (click)="openModificationModal(vh)"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noPiece>
+    <p>Aucune pièce trouvé.</p>
+  </ng-template>
+</div>
+
+<!-- Modal insertion-->
+<div
+  class="modal fade"
+  id="modalInsertion"
+  tabindex="-1"
+  aria-labelledby="modalLabelInserion"
+  aria-hidden="true"
+  (hidden.bs.modal)="onInsertionModalClose()"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelInserion">Ajout pièce</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form class="row g-3" (ngSubmit)="ajouterPiece()" #pieceForm="ngForm">
+        <div *ngIf="errorMessageInsertion" class="modal-header text-danger">
+          {{ errorMessageInsertion }}
+        </div>
+        <div class="modal-body">
+          <div class="col-12">
+            <label for="libelle" class="form-label">Libelle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="libelle"
+              [(ngModel)]="newPiece.libelle"
+              #libelle="ngModel"
+              name="libelle"
+              required
+            />
+            <div
+              *ngIf="isInsertionSubmit && libelle.invalid"
+              class="text-danger"
+            >
+              <div *ngIf="libelle.errors?.['required']">
+                Le libellé est requis.
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <label for="prix" class="form-label">Prix</label>
+            <input
+              type="text"
+              class="form-control"
+              id="prix"
+              [(ngModel)]="newPiece.prix"
+              #prix="ngModel"
+              name="prix"
+              required
+              pattern="^[0-9]+$"
+            />
+            <div
+              *ngIf="isInsertionSubmit && prix.invalid"
+              class="text-danger"
+            >
+              <div *ngIf="prix.errors?.['required']">Le prix est requis.</div>
+              <div *ngIf="prix.errors?.['pattern']">
+                Le prix doit être un nombre entier positif (ex. 123).
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2">
+            <label class="form-label">Type de véhicule</label>
+            <div class="d-flex flex-wrap gap-3">
+              <div
+                class="form-check"
+                *ngFor="let tv of type_vehicule; let i = index"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [value]="tv._id"
+                  [name]="'type_vehicule_' + tv._id"
+                  [checked]="newPiece.type_vehicule_id.includes(tv._id)"
+                  (change)="onInsertTypeVehiculeChange($event, tv._id)"
+                />
+                <label class="form-check-label">
+                  {{ tv.libelle }}
+                </label>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                isInsertionSubmit && newPiece.type_vehicule_id.length === 0
+              "
+              class="text-danger"
+            >
+              Veuillez sélectionner au moins un type de véhicule.
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            id="insertionModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span
+              *ngIf="isInsertionLoading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span *ngIf="!isInsertionLoading">Valider</span>
+            <span *ngIf="isInsertionLoading">En attente</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal modification-->
+<div
+  class="modal fade"
+  id="modalModification"
+  tabindex="-1"
+  aria-labelledby="modalLabelModification"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelModification">Modifier pièce</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        class="row g-3"
+        (ngSubmit)="modifierPiece()"
+        #modificationForm="ngForm"
+      >
+        <div *ngIf="errorMessageModification" class="modal-header text-danger">
+          {{ errorMessageModification }}
+        </div>
+        <div class="modal-body">
+          <!-- Libelle -->
+          <div class="col-12">
+            <label for="libelleModif" class="form-label">Libelle</label>
+            <input
+              type="text"
+              class="form-control"
+              id="libelleModif"
+              [(ngModel)]="selectedPiece.libelle"
+              #libelleModif="ngModel"
+              name="libelleModif"
+              required
+            />
+            <div
+              *ngIf="isModificationSubmit && libelleModif.invalid"
+              class="text-danger"
+            >
+              <div *ngIf="libelleModif.errors?.['required']">
+                Le libellé est requis.
+              </div>
+            </div>
+          </div>
+
+          <!-- Prix -->
+          <div class="col-12 mt-2">
+            <label for="prixModif" class="form-label">Prix</label>
+            <input
+              type="text"
+              class="form-control"
+              id="prixModif"
+              [(ngModel)]="selectedPiece.prix"
+              #prixModif="ngModel"
+              name="prixModif"
+              required
+              pattern="^[0-9]+$"
+            />
+            <div
+              *ngIf="isModificationSubmit && prixModif.invalid"
+              class="text-danger"
+            >
+              <div *ngIf="prixModif.errors?.['required']">
+                Le prix est requis.
+              </div>
+              <div *ngIf="prixModif.errors?.['pattern']">
+                Le prix doit être un nombre entier positif (ex. 123).
+              </div>
+            </div>
+          </div>
+
+          <!-- Type de véhicule -->
+          <div class="col-12 mt-2">
+            <label class="form-label">Type de véhicule</label>
+            <div class="d-flex flex-wrap gap-3">
+              <div
+                class="form-check"
+                *ngFor="let tv of type_vehicule; let i = index"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [value]="tv._id"
+                  [name]="'type_vehicule_modif_' + tv._id"
+                  [checked]="selectedPiece.type_vehicule_id.includes(tv._id)"
+                  (change)="onModifyTypeVehiculeChange($event, tv._id)"
+                />
+                <label class="form-check-label">
+                  {{ tv.libelle }}
+                </label>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                isModificationSubmit && selectedPiece.type_vehicule_id.length === 0
+              "
+              class="text-danger"
+            >
+              Veuillez sélectionner au moins un type de véhicule.
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            id="modificationModalClose"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fermer
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isModificationLoading"
+          >
+            <span
+              *ngIf="isModificationLoading"
+              class="spinner-border spinner-border-sm me-2"
+            ></span>
+            <span *ngIf="!isModificationLoading">Valider</span>
+            <span *ngIf="isModificationLoading">En attente</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

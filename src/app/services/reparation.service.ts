@@ -64,7 +64,7 @@ export class ReparationService {
       "prix_main_doeuvre" : prix_main_doeuvre
     }
 
-    return this.http.post<any>(`${this.apiUrl}/terminer`,body);
+    return this.http.post<any>(`${this.apiUrl}/terminer`,body,{headers});
   }
 
   payerReparation(rendez_vous_id: string) : Observable<any>{
@@ -77,7 +77,7 @@ export class ReparationService {
       "rendez_vous_id" : rendez_vous_id
     }
 
-    return this.http.post<any>(`${this.apiUrl}/payer`,body);
+    return this.http.post<any>(`${this.apiUrl}/payer`,body,{headers});
   }
 
   getReparationById(id_reparation: string) :  Observable<any>{
@@ -85,7 +85,7 @@ export class ReparationService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<any>(`${this.apiUrl}/find/${id_reparation}`);
+    return this.http.get<any>(`${this.apiUrl}/find/${id_reparation}`,{headers});
   }
 
   formatDate(date : Date) : string{

@@ -28,7 +28,7 @@ export class RendezvousService {
       "id_voiture" : id_voiture
     }
 
-    return this.http.post(`${this.apiUrl}/save`,body);
+    return this.http.post(`${this.apiUrl}/save`,body,{headers});
   }
 
   updateRendezVous(value : any) : Observable<any> {
@@ -45,7 +45,7 @@ export class RendezvousService {
       "mecanicien_id" : value.mecanicien_id
     }
 
-    return this.http.put(`${this.apiUrl}/update`,body);
+    return this.http.put(`${this.apiUrl}/update`,body,{headers});
 
   }
 
@@ -69,7 +69,7 @@ export class RendezvousService {
     });
 
     const employeId = localStorage.getItem('userId');
-    return this.http.get<any[]>(`${this.apiUrl}/employe/${employeId}`)
+    return this.http.get<any[]>(`${this.apiUrl}/employe/${employeId}`,{headers})
   }
 
   getRendezVousById(_idRendezvous : any) : Observable<any>{
@@ -83,7 +83,7 @@ export class RendezvousService {
       "_idRendezvous" : _idRendezvous
     }; 
 
-    return this.http.post<any>(`${this.apiUrl}/find`,body);
+    return this.http.post<any>(`${this.apiUrl}/find`,body,{headers});
   }
 
   getReparationForRendezVous(id_rendezvous: string) :  Observable<any>{
@@ -91,7 +91,7 @@ export class RendezvousService {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
       });
-    return this.http.get<any>(`${this.apiUrl}/reparation/${id_rendezvous}`);
+    return this.http.get<any>(`${this.apiUrl}/reparation/${id_rendezvous}`,{headers});
   }
 
   // rendez vous rehetra ny client iray

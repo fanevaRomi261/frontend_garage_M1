@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment} from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../model/service.model';
 
@@ -13,11 +13,19 @@ export class ServiceService {
   constructor(private http: HttpClient) { }
 
   getServices() : Observable<Service[]>{
-    return this.http.get<Service[]>(this.apiUrl);
+     const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+      });
+    return this.http.get<Service[]>(this.apiUrl,{headers});
   }
 
   findServiceById(idService : string) : Observable<Service>{
-    return this.http.get<Service>(this.apiUrl+'/find/'+idService);   
+    const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<Service>(`${this.apiUrl}/find/${idService}`, {headers});   
   }
 
   

@@ -110,7 +110,7 @@ export class RendezvousService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.put(this.apiUrl+'/annuler/'+rdv_id,{headers});
+    return this.http.put(this.apiUrl+'/annuler/'+rdv_id,{},{headers});
   }
 
   convertRdvMecanicienToEvent(listeRdv: any[]) : any[] {

@@ -30,9 +30,9 @@ export class ChangePasswordComponent {
       this.authService.changerPwd(oldPwd, newPwd).subscribe({
         next: () => {
           this.isLoading = false;
-          localStorage.setItem('mustChangePassword', 'false');
-          alert('Mot de passe modifié avec succès');
-          this.router.navigate(['/accueil']);
+          this.authService.clearCache();
+          alert('Mot de passe changé avec succès, veuillez vous reconnecter.');
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           this.isLoading = false;

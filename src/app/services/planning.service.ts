@@ -16,7 +16,13 @@ export class PlanningService {
       service_id: service_id,
       date_rdv: date_rdv,
     };
-    return this.http.post(`${this.apiUrl}/proposeCreneau`, body);
+
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post(`${this.apiUrl}/proposeCreneau`, body,{headers});
   }
 
   getMecanicienPropose(date_rdv: string,id_rendezvous: string,creneauChoisi: number[]) : Observable<any[]> {
@@ -32,7 +38,7 @@ export class PlanningService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<any[]>(`${this.apiUrl}/mecanicien/libre`,body);
+    return this.http.post<any[]>(`${this.apiUrl}/mecanicien/libre`,body,{headers});
   }
 
   

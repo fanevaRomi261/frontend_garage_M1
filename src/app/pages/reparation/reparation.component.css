@@ -73,3 +73,11 @@
   textarea{
     font-size: 0.9em;
   }
+
+  .row-somme{
+    display: flex;
+    padding-left: 1em;
+    justify-content: space-between;
+    padding-right: 1em;
+    font-weight: 600;
+  }

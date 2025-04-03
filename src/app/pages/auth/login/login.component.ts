@@ -35,7 +35,7 @@ export class LoginComponent {
         // console.log(localStorage.getItem("userData"));
         this.loading = false;
         if (response.mustChangePassword) {
-          alert(response.message);
+          alert("Vous devez changer votre mot de passe !!!");
           this.router.navigate(['/change-password']);
         } else {
           this.router.navigate(['/accueil']);

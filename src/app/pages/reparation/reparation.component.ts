@@ -41,6 +41,8 @@ export class ReparationComponent {
   isInsertFormSubmitted: boolean = false;
   isInsertFormLoading: boolean = false;
 
+  sommeReparation : number | null = null;
+
   errorMessage: string | null = null;
 
   constructor(
@@ -74,8 +76,49 @@ export class ReparationComponent {
         this.loadUserRoleAndPermissions();
         this.loadPiece();
       }
+      // if(this.infoRendezVous  && this.infoReparation){
+      //   if(this.infoRendezVous.etat === 25){
+      //     this.calculSumReparation();
+      //   }
+      // }
     });
   }
+
+
+  calculSumReparation(): void{
+    if(this.infoReparation?.detail_reparation_id.length > 0 ){
+      this.infoReparation?.detail_reparation_id.map((item:any) =>{
+        this.sommeReparation = item.prix_total + this.sommeReparation;
+      });
+      console.log("log 1:" +  this.sommeReparation);
+      this.sommeReparation = this.infoReparation?.prix_main_doeuvre + this.sommeReparation;
+      console.log("log 2:" +  this.sommeReparation);
+    }else{
+      this.sommeReparation = this.infoReparation?.prix_main_doeuvre;
+      console.log("log 3: tsisy data" +  this.sommeReparation);
+    }
+  }
+
+  // calculSumReparation(): void {
+  //   if (!this.infoReparation || !this.infoReparation.detail_reparation_id) {
+  //     console.warn("Les données de réparation ne sont pas encore chargées.");
+  //     return;
+  //   }
+  
+  //   this.sommeReparation = 0;
+  
+  //   if (this.infoReparation.detail_reparation_id.length > 0) {
+  //     this.sommeReparation = this.infoReparation.detail_reparation_id.reduce(
+  //       (acc: number, item: any) => acc + (item.prix_total || 0),
+  //       0
+  //     );
+  //     console.log("log 1:", this.sommeReparation);
+  //   }
+  
+  //   this.sommeReparation += this.infoReparation.prix_main_doeuvre || 0;
+  //   console.log("log 2:", this.sommeReparation);
+  // }
+
 
   loadUserRoleAndPermissions(): void {
     const userData = localStorage.getItem('userData');
@@ -99,6 +142,12 @@ export class ReparationComponent {
               next: (rendezVous) => {
                 this.infoRendezVous = rendezVous;
                 console.log('Rendez-vous récupéré :', this.infoRendezVous);
+                
+                if (this.infoRendezVous && this.infoRendezVous?.etat === 25) {
+                  this.calculSumReparation();
+                  console.log("somme calculé : ");
+                }
+
               },
               error: (error) => {
                 console.error(

@@ -153,6 +153,15 @@
         </div>
       </div>
 
+      <hr>
+
+      <div class="row-somme" *ngIf="infoRendezVous?.etat >= 25">
+        <span>Prix Total Réparation : </span>
+        
+        <span>{{this.sommeReparation}} Ar</span>
+      </div>
+
+
     </div>
 </div>
 
